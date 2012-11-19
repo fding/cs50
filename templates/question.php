@@ -16,7 +16,20 @@
     <div id="response">
     </div>
         <textarea id="question" placeholder="Post your question here..." style="width: 510px; height: 150px"></textarea>
-        <textarea id="tags" placeholder="Enter tags here..." style="width: 510px; height: 20px"></textarea>
+        <div class="control-group">
+            <select name="symbol">
+                <option value="">Tags</option>
+                <option value=pset>pset</option>
+                <option value=essay>essay</option>
+            </select>
+            <input id="psetnum" type="text" style="width: 20px"></input>
+            <select name="symbol">
+                <option value="">Courses</option>
+                <option value=1>Math 55</option>
+                <option value=essay>CS 50</option>
+                <option value=phys>Physics 16</option>
+            </select>
+        </div>
         <script type="text/javascript">
         $('#question').wysihtml5();
         </script>

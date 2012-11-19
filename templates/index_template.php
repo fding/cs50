@@ -19,7 +19,7 @@
 		// Search for courses
 	?>
         <form class="form-search">
-            <input type="text" data-provide="typeahead" placeholder="Search for classes">
+            <input style="width:92%;" type="text" data-provide="typeahead" placeholder="Search for classes">
         </form>
 	<?php
 		// Course-container stores all the courses and associated tags

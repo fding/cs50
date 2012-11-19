@@ -75,7 +75,7 @@
                 <a href=<?="\"thread.php?course=".$post["course_id"]."&thread=".$post["post_id"]."\""?>> <?=$post["post_title"]?> </a>
             </div>
             <div class="postauthor">
-                <?=$post["poster_firstname"]." ".$post["poster_lastname"]?>
+                <em>Asked by </em><?=$post["poster_firstname"]." ".$post["poster_lastname"]?>
             </div>
             <div class="postdate">
                 <?=$post["posttime"]?>
