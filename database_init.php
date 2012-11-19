@@ -12,8 +12,7 @@
     email VARCHAR(255),
     password VARCHAR(255),
     file VARCHAR(255),
-    rating INT
-    )");
+    rating INT)");
     query("CREATE TABLE unactivated_users
     (
     firstname VARCHAR(255),
@@ -21,13 +20,12 @@
     email VARCHAR(255),
     password VARCHAR(255),
     confcode VARCHAR(255),
-    registration_date DATETIME
-    )");
+    registration_date DATETIME)");
     
     query("CREATE TABLE harvardcourses
     (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) INDEX,
+    name VARCHAR(255),
     department VARCHAR(255)
     )");
 ?>

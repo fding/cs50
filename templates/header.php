@@ -9,7 +9,9 @@
 
         <link rel="stylesheet" type="text/css" href="/css/bootstrap-wysihtml5.css"></link>
         <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"></link>
-
+        
+        <?php require("../templates/question.php"); ?>
+        
         <?php if (isset($title)): ?>
             <title>Harvard Discuss: <?= htmlspecialchars($title) ?></title>
         <?php else: ?>
@@ -58,26 +60,6 @@
 				<?php
 					// Display the log out button if the user is log in, and otherwise, displays the register and log in buttons
 				?>
-				
-				<div id="askModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	                <div class="modal-header">
-		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		                <h3 id="myModalLabel">Ask</h3>
-	                </div>
-	                <div class="modal-body">
-	                <div id="response">
-	                </div>
-                        <textarea id="question" placeholder="Post your question here..." style="width: 510px; height: 150px"></textarea>
-                        <textarea id="tags" placeholder="Enter tags here..." style="width: 510px; height: 20px"></textarea>
-                        <script type="text/javascript">
-                        $('#question').wysihtml5();
-                        </script>
-                    </div>
-	                <div class="modal-footer">
-		                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		                <button class="btn btn-primary" id="submit">Submit</button>
-	                </div>
-                </div>
 				
 				<?php if (isset($_SESSION["id"])):?>
 					<div style="margin:5px; position:relative; right:-5%;">
