@@ -1,0 +1,37 @@
+Database
+
+Tables:
+users, stores active users.
+	-varchar(255) firstname, varchar(255) lastname, varchar(255) email, varchar(255) password, varchar(255) confcode,
+	varchar(255) file, int rating
+	password is the hash of the user's password
+unactivated_users, stores users who have not confirmed their emails yet
+	-int(unsigned) id, varchar(255) firstname, varchar(255) lastname, varchar(255) email, varchar(255) password, 
+	datetime registration_date
+harvardcourses, stores all harvard courses for which a forum has been created
+	-int(unsigned) id, varchar(255) name, varchar(255) department
+postsin[id], where id is the unique id of a course.
+	-int(unsigned) post_id,  int(unsigned) poster_id, varchar(255) poster_firstname, varchar(255) poster_lastname, varchar(255) post title, 
+	varchar(255) tags, varchar(511) keywords, int post_rating, varchar(255) file, varchar(511) privacy setting, datetime posttime.
+	Privacy setting: a csv of integers
+	first component: 0 if completely public, 1 if the post is anonymous, 2 if visible to only people taking the course, 
+	3 if visible to following people, 4 if anonymous to everyone but the following people
+	second, third, ... component: a csv of user id's who have special permissions.
+tagsin[id], where id is the unique id of a course.
+	-int(unsigned) tag_id, varchar(255) tag_type, varchar(255) tag_name
+	where tag_type is either:
+		-pset
+		-lecture
+		-section
+		-exam
+		-midterm
+		-final
+		-project
+
+Files
+	User files should be stored in
+		users/userfile
+	post files should be stored in
+		posts/courseid/tagid
+
+	

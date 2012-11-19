@@ -1,0 +1,167 @@
+.metacontainer{
+    position: relative;
+    width:100%;
+    height:2000px;
+}
+
+
+html, body {
+margin: 0px;
+background-color:#FFFFFF;
+padding: 0px;
+overflow: hidden; 
+}
+
+#thread-panel{
+  border-bottom:1px solid #ccc;
+  position:relative;
+  top: 0%;
+  width: 100%;
+  height: 25px;
+  background-color: #eaeaf0;
+}
+
+#thread-panel:hover{
+  background-color: #dedef0;
+  cursor:pointer;
+}
+
+#thread-container{
+  position:relative;
+  padding-left:1%;
+  padding-right:1%;
+  padding-top:1%;
+  margin: 5px;
+}
+
+.container{
+    position:relative;
+}
+
+.thread{
+	border: 1px solid #999;
+	position:absolute;
+	left: 23%;
+	top: 0%;
+	width: 77%;
+	height:100%;
+}
+
+
+
+.navigation{
+  border: 1px solid #999;
+  position:absolute;
+  left: 0%;
+  top: 0%;
+  width: 20.9%;
+  padding-left:1%;
+  padding-right:1%;
+  height:100%;
+  
+}
+.forum{
+  border: 1px solid #999;
+  position:absolute;
+  left: 23%;
+  top: 0%;
+  width: 75%;
+  padding-left:1%;
+  padding-right:1%;
+  padding-top:1%;
+  height:100%
+}
+
+
+
+.course-container{
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  *border: 1px solid #999;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+.course{
+  border-top: 1px solid #999;
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  *border-top: 1px solid #999;
+          padding:4px;
+          -webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.course:hover{
+   background-color: #f9f9f9;
+}
+
+.tagcontainer{
+    margin-top:5px;
+    margin-left:10px;
+}
+
+.post-container{
+    margin-top:5px;
+}
+
+.post{
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  *border: 1px solid #999;
+  -webkit-border-radius: 10px;
+     -moz-border-radius: 10px;
+          border-radius: 10px;
+          margin-top:2px;
+    position: relative;
+}
+.post:hover {
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  *border: 1px solid #999;
+  -webkit-border-radius: 10px;
+     -moz-border-radius: 10px;
+          border-radius: 10px;
+          background-color: #f8f8f8;
+}
+
+
+.posttitle{
+  margin-top: 2px;
+  margin-left: 5px;
+  font-weight: bold;
+  position:absolute;
+  top: 0%;
+  left:20%;
+  color: black;
+}
+
+.postauthor{
+    margin-top: 2px;
+    margin-right: 5px;
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    
+}
+
+.postdate{
+    margin-top: 2px;
+    margin-right: 5px;
+    position: absolute;
+    left: 70%;
+    top: 0%;
+}
+
+.posttags{
+  margin-top: 3px;
+  margin-left: 12px;
+
+}
+
+.tagcontainer{
+    line-height: 110%;
+}
