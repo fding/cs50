@@ -1,1 +1,3 @@
-CS 50 Project. TESTEWTJWEIKTJWEAKLEJETAWLKW
+git commit -a
+git push origin master
+git pull origin master
