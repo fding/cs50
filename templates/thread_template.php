@@ -1,31 +1,26 @@
-<div class="thread">
-    <div id="thread-panel">
-        &nbsp;
-        <i class="icon-chevron-left"></i>
-        <em style="font-family:helvetica,sans-serif;">Back</em>
-    </div>
-    <script>
-        $(document).ready(function(){
-            $("#thread-panel").click(function(){
-                history.back();
-            }
-            );
-        }
-        );
-    </script>
-    <div id="thread-container" class="post">
-    <div>
-        <?=$question["course"]?> <i class="icon-chevron-right"></i> 
-        <?=$tags[$question["course_id"]][$question["tags"]-1]["tag_name"]?>
-        <h4 style="position:absolute; top: 0%; left:20%">
-            <?=$question["post_title"]?>
-        </h4>
-        <em style="position:absolute; top: 0.5%; right:10%">
-            Asked by 
-            <?=$question["poster_firstname"]." ".$question["poster_lastname"]?>
-        </em>
+<?php if (!empty($question)):?>
+<div id="thread-container">
+    <div class="post-thread-view">
+        <div class="post-thread-view-tag">
+            <?=$question["course"]?> <i class="icon-chevron-right"></i> 
+            <?=$tags[$question["course_id"]][$question["tags"]-1]["tag_name"]?>
+        </div>
+        <div class="post-thread-view-title">
+            <h4><?=$question["post_title"]?></h4>
+        </div>
+        <div class="post-thread-view-poster">
+            <em><?=$question["poster_firstname"]." ".$question["poster_lastname"]?></em>
+        </div>
+        <div class="post-thread-view-body">
+            <?=file_get_contents("../data/".$question["file"]);?>
+        </div>
+        <div class="post-thread-view-vote">
+            <a href="" class="upvote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </a>
+            <h4 style="text-align:center"><?=$question["post_rating"]?></h4>
+            <a href="" class="downvote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
     </div>
     <br />
-    <?=file_get_contents("../data/".$question["file"]);?>
-    </div>
 </div>
+<?php endif?>

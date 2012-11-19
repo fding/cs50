@@ -2,33 +2,27 @@
 
 <html>
     <head>
-        <link href="css/bootstrap.css" rel="stylesheet"/>
-        <link href="css/bootstrap-responsive.css" rel="stylesheet"/>
-        <link href="css/styles.css" rel="stylesheet"/>
-        <link href="css/posts.css" rel="stylesheet"/>
-
-        <link rel="stylesheet" type="text/css" href="/css/bootstrap-wysihtml5.css"></link>
-        <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"></link>
-        
-        <?php require("../templates/question.php"); ?>
         
         <?php if (isset($title)): ?>
             <title>Harvard Discuss: <?= htmlspecialchars($title) ?></title>
         <?php else: ?>
             <title>Harvard Discuss</title>
         <?php endif ?>
+        
+        <link href="css/bootstrap.css" rel="stylesheet"/>
+        <link href="css/bootstrap-responsive.css" rel="stylesheet"/>
 
-        <script src="js/jquery-1.8.2.js"></script>
-        <script src="js/bootstrap.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap-wysihtml5.css" /link>
+        <link href="css/styles.css" rel="stylesheet"/>
+        
+        <script src="js/jquery-1.7.2.min.js"></script>
+
         <script src="js/scripts.js"></script>
         <script src="js/jquery.cookie.js"></script>
         <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         </script>
         
-        <script src="js/wysihtml5-0.3.0.js"></script>
-        <script src="js/jquery-1.7.2.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/bootstrap-wysihtml5.js"></script>
+        <script src="js/bootstrap.js"></script>
         <script src="js/jquery.cookie.js"></script>
         
         <script type="text/x-mathjax-config">
@@ -36,6 +30,8 @@
           tex2jax: {inlineMath: [['$$','$$'], ['\\(','\\)']], displayMath:[['\\[','\\]']]}
         });
         </script>
+        <script src="js/wysihtml5-0.3.0.js"></script>
+        <script src="js/bootstrap-wysihtml5.js"></script>
 
     </head>
 
@@ -68,8 +64,11 @@
                             <button class="btn dropdown-toggle" data-toggle="dropdown">
 					            <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu" style="min-width:130px">
+                                <li><a tabindex="-1" href="logout.php">Manage courses</a></li>
                                 <li><a tabindex="-1" href="logout.php">Logout</a></li>
+                                <hr/>
+                                <li><a tabindex="-1" href="logout.php">Feedback</a></li>
                             </ul>
                         </div>
 					    
@@ -89,11 +88,13 @@
             </div>
         </div>
 		<div id="middle">
+        <?php require("../templates/question.php");?>
 	<?php
 		// Render the registration form as a modal if not logged in.
 	?>
 	<?php if (!isset($_SESSION["id"]))
 	    require("../templates/registration_template.php");
+	    
 	?>
 
 

@@ -1,11 +1,3 @@
-<link rel="stylesheet" type="text/css" href="/css/bootstrap-wysihtml5.css"></link>
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"></link>
-
-<script src="js/wysihtml5-0.3.0.js"></script>
-<script src="js/jquery-1.7.2.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/bootstrap-wysihtml5.js"></script>
-<script src="js/jquery.cookie.js"></script>
 
 <div id="askModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
@@ -15,6 +7,7 @@
     <div class="modal-body">
     <div id="response">
     </div>
+        <input id="title" placeholder="Title..." type="text" style="width: 510px"></input>
         <textarea id="question" placeholder="Post your question here..." style="width: 510px; height: 150px"></textarea>
         <div class="control-group">
             <select name="symbol">
@@ -25,9 +18,14 @@
             <input id="psetnum" type="text" style="width: 20px"></input>
             <select name="symbol">
                 <option value="">Courses</option>
-                <option value=1>Math 55</option>
-                <option value=essay>CS 50</option>
-                <option value=phys>Physics 16</option>
+                <?php $file = fopen("../includes/courses.json", "r"); ?>
+                
+                <?php $json = stream_get_contents($file); ?>
+                <?php $courses = json_decode($json, true); ?>                
+                <?php
+                    foreach ($courses as $key => $value) 
+                        print("<option value={$value}>{$key}</option>");
+                ?>
             </select>
         </div>
         <script type="text/javascript">
