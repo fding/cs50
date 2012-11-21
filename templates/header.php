@@ -88,7 +88,7 @@
             </div>
         </div>
 		<div id="middle">
-        <?php require("../templates/question.php");?>
+		<?php if (isset($_SESSION["id"])) require("../templates/question_form.php");?>
 	<?php
 		// Render the registration form as a modal if not logged in.
 	?>
