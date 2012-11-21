@@ -129,5 +129,26 @@
         return $answer;
     }
     
-    
+    // Returns 0 if the post is unrelated to word, a positive integer to represent degree of similarity.
+    function containsword($post, $filter)
+    {
+        // Algorithm: A match in the title counts 3 times as much as a match in the actual post.
+        // Conected strings of words count one extra.
+        // Else, each word counts once.
+        // If not every word is present, return 0.
+        $token=strtok($filter,' ');
+        $postcontents=file_get_contents("../data/".$question["file"]);
+        $score=0;
+        $wordfound=[];
+        while ($token!==false)
+        {
+            $rest=strstr($post["title"],$token);
+            $addition=3*substr_count($rest, $token);
+            $score+=$addition;
+            if ($addition!=0)
+                $wordfound[$token]=true;
+            
+            $token=strtok(' ');
+        }
+    }
 ?>
