@@ -10,7 +10,7 @@
             query("UPDATE users SET file=? WHERE ID=?",$user["file"],$user["id"]);
         }
         $i=1;
-        $file=fopen("../".$user["file"],'w');
+        $file=fopen("../".$user["file"],'a');
         while (!empty($_POST["course$i"]))
         {
             // Need code to check whether course is valid
