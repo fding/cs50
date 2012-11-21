@@ -123,7 +123,7 @@
 ?>
 <div class="forum">
     <div id="panel" style="position: relative; width:100%">
-        <input type="text" style="width:47%" search-query" placeholder="Search for posts"/>
+        <input type="text" style="width:47%" search-query" id="searchposts" placeholder="Search for posts"/>
         <div style="position: absolute; top:0%; left: 53%; width:100%">
             Sort by
             <div id="sortmethod" class="btn-group">
@@ -145,6 +145,45 @@
                 $("#viewbutton").text("Date");
                 $("#sortmethod a").text("Helpfulness");
             }
+            $("#searchposts").keyup(function(e){
+                selectedcourses="";
+                selectedtags="";
+                $(".active").each(function(){
+                    if ($(this).attr("id")[0]=="c")
+                        selectedcourses+=$(this).attr("id").substr(6)+",";
+                    else if ($(this).attr("id")[0]=="t")
+                        selectedtags+=$(this).attr("id").substr(3)+",";
+                }
+                );
+                url="index.php?"
+                if (selectedcourses!="")
+                {
+                    selectedcourses=selectedcourses.substr(0,selectedcourses.length-1);
+                    url+="scourses="+selectedcourses+"&";
+                }
+                if (selectedtags!="")
+                {
+                    selectedtags=selectedtags.substr(0,selectedcourses.length-1);
+                    url+="tags="+selectedtags+"&";
+                }
+                url+="filter="+encodeURI($("#searchposts").val());
+                $.ajax({
+	                url:'forum.php',
+	                type: 'POST',
+	                data:{
+	                    tags:selectedtags,
+	                    scourses:selectedcourses,
+	                    filter:$("#searchposts").val()
+	                },
+	                success: function(response)
+	                {
+	                    $(".post-container").html(response);
+	                    window.history.pushState(null,'',url);
+	                    return false;
+	                }
+                });
+            }
+            );
             $("#sortmethod a").click(function(e){
                 e.preventDefault();
                 sortmethod=$(this).text();

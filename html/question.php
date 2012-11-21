@@ -2,6 +2,7 @@
     // configuration
 require("../includes/config.php");
 // if form was submitted
+
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
 	// Even though we already checked client side for proper form submission, we better properly do so server side also!
@@ -17,15 +18,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		print("You must provide a course.");
 	else
 	{
-	    $rows = query("SELECT * FROM harvardcourses WHERE name = ?", course);
+	    $rows = query("SELECT * FROM harvardcourses WHERE name = ?", $_POST["course"]);
         if(count($rows) == 1)
         {
-        
+            $courseid = $rows[0]["id"];
+            $user = query("SELECT * FROM users WHERE id = ?", $_SESSION["id"]);
+            $firstname = $user[0]["firstname"];
+            $lastname = $user[0]["lastname"];
+            query("INSERT INTO tagsin".$courseid." (tag_type, tag_name) VALUES ($_POST["type"], $_POST["type"].$_POST["psetnum"])");
+            
+            
+            query("INSERT INTO postsin".$courseid." (poster_id, link, poster_firstname, poster_lastname, post_title, tags, post_rating, file, posttime)
+            VALUES ($_SESSION["id"], 0, $firstname, $lastname, $_POST["title"], 
+            mkdir("../data/" . 
         }
         else
 	    {
-	        query("INSERT INTO 
-	        createcourseforum(
+	        query("INSERT INTO harvardcourses (name) VALUES(?)", $_POST["course"]);
+	        $rows = query("SELECT id FROM harvardcourses WHERE name = ?", $_POST["course"]);
+	        $id = $rows[0]["id"];
+	        createcourseforum($id);
+//	        mkdir("../data/" . $id . "/");
 	    }
 	}
+}
 ?>

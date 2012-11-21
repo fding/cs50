@@ -1,4 +1,7 @@
 <?php if (!empty($question)):?>
+<script>
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub,"thread-container"]);
+</script>
 <div id="thread-container">
     <div class="post-thread-view">
         <div class="post-thread-view-tag">

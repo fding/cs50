@@ -20,6 +20,8 @@
             <div id="type-error" style="color:red"></div>
             <input id="psetnum" name="psetnum" type="text" style="width: 20px"></input>
             <div id="psetnum-error" style="color:red"></div>
+        </div>
+        <div class="control-group">
             <select name="courselist">
                 <option value="">Courses</option>
                 <?php $file = fopen("../includes/courses.json", "r"); ?>
@@ -28,7 +30,7 @@
                 <?php $courses = json_decode($json, true); ?>                
                 <?php
                     foreach ($courses as $key => $value) 
-                        print("<option value={$value}>{$key}</option>");
+                        print("<option value={$key}>{$key}</option>");
                 ?>
             </select>
             <div id="courselist-error" style="color:red"></div>
@@ -74,10 +76,10 @@
 			});
 			
 			$("select[name=courselist]").blur(function(){
-				if ($("select[name=courselist]").val()="")
+				if ($("select[name=courselist]").val()=="")
 					$("#courselist-error").text("Please select a course!");
 				else
-				$("#email-error").text("");
+				    $("#courselist-error").text("");
 			});
 			
 			$("#submit").click(function(){
@@ -86,15 +88,15 @@
 					type: 'POST',
 					data:{
 						title: $("input[name=title]").val(),
-						question: $("input[name=question]").val(),
-						type: $("input[name=type]").val(),
-						psetnum: $("input[name=type]").val(),
-						course: $("input[name=courselist]").val()
+						question: $("textarea[name=question]").val(),
+						type: $("select[name=type]").val(),
+						psetnum: $("input[name=psetnum]").val(),
+						course: $("select[name=courselist]").val()
 					},
 					success: function(response)
 					{
-						if (response=="SUCCESS")
-							window.location.replace("index.php");
+					  //  window.location.reload(true);
+					    $("#courselist-error").html(response);
 					}
 				});
 				return false;
