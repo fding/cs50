@@ -19,13 +19,15 @@
     lastname VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
-    confcode VARCHAR(255),
+    confirmationcode VARCHAR(255),
     registration_date DATETIME)");
-    
     query("CREATE TABLE harvardcourses
     (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
-    department VARCHAR(255)
+    department VARCHAR(255),
+    cat_num VARCHAR(16),
+    term VARCHAR(16),
+    number VARCHAR(10)
     )");
 ?>

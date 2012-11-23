@@ -1,55 +1,64 @@
-<div style="text-align:center;">
+<div style="text-align:center;width:80%;margin-left:50px;margin-top:20px">
 <h4>
 Hello, <?=$user["firstname"]?>! Please tell us what courses you are taking.
 </h4>
-<form action="addcourses.php" method="post">
-    <div id="addedcourses">
-        <input type="text" data-id="1" class="coursename" data-provide="typeahead" placeholder="Search for classes" value="">
-        <button class="btn btn-success addcoursebutton" data-id="1" type="button">Add</button>
-        <input type="hidden" name="course1" value="">
-    </div>
-    <button type="submit" class="btn">Finish</button>
-</form>
+<table class="table">
+    <?php foreach ($mycourses as $course):?>
+    <tr>
+        <td><?=$course["name"]?> </td>
+        <td><button class="btn btn-medium btn-success removecoursebutton" data-course=<?=$course["id"]?> type="button">Remove</button></td>
+    </tr>
+    <?php endforeach;?>
+    <tr>
+        <td>
+            <input type="text" data-id="1" id="newclass" class="findcourse" data-provide="typeahead" placeholder="Search for classes">
+        </td>
+        <td>
+            <button class="btn btn-medium btn-success" id="addcoursebutton" type="button">Add</button>
+        </td>
+    </tr>
+</table>
 </div>
 <script>
     $(document).ready(function(){
-        window.buttons=1;
-        //$('.addcoursebutton').hide();
-        $("#addedcourses").on("click", ".addcoursebutton", function(){
-            $("input[name='course"+$(this).data("id")+"']").val($("input[data-id='"+$(this).data("id")+"']").val());
-            
-            if (window.buttons==$(this).data("id"))
-            {
-                createElement(window.buttons+1);
-                window.buttons+=1;
-            }
+        $(".removecoursebutton").click(function(){
+            sender=$(this);
+			$.ajax({
+				url:'removecourse.php',
+				type: 'POST',
+				data:{
+				    course:sender.data("course")
+				},
+				success: function(response){
+					location.reload();
+				}
+			});
         }
         );
-        /*
-        $("#addedcourses").on("change",".coursename", function(){
-            if ($(this).val()=="")
-                $("button[data-id='"+$(this).data("id")+"']").show();
+        
+        $("#classtoadd").change(function(){
+            if ($("#classtoadd").data("complete")=="true")
+                $("#addcoursebutton").show();
             else
-                $("button[data-id='"+$(this).data("id")+"']").show();   
+                $("#addcoursebutton").show();
         }
-        );*/
+        )
+        
+        $("#addcoursebutton").click(function(){
+            sender=$(this);
+			$.ajax({
+				url:'addcourse.php',
+				type: 'POST',
+				data:{
+				    course:$("#newclass").val()
+				},
+				success: function(response){
+					location.reload();
+				}
+			});
+        }
+        );
+        
     }
     );
-    
-    function createElement(number)
-    {
-        firstinput="<input type='text' class='coursename' data-id='"+number.toString()+"' data-provide='typeahead' placeholder='Search for classes'>\n";
-        secondinput="<button class='btn btn-success addcoursebutton' data-id='"+number.toString()+"' type='button' style='visibility:invisible'>Add</button>\n";
-        thirdinput="<input type='hidden' name='course"+number.toString()+"' value=''>";
-        $("#addedcourses").append("<br/\>"+firstinput+secondinput+thirdinput);
-        $("#button"+number.toString()).bind("click",
-            function(){
-                $("input[name='course"+number.toString()+"']").val($("#course"+number.toString()).val());
-                if (window.buttons==number.toString())
-                {
-                    createElement(window.buttons+1);
-                }
-        }
-        );
-    }
 </script>

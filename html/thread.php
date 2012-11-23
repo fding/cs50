@@ -33,8 +33,13 @@
     
     if (!isset($tags))
     {
-        $tags[$threadcourse]=query("SELECT * FROM tagsin".$threadcourse);
+        $rows=query("SELECT * FROM tagsin".$threadcourse);
+        foreach ($rows as $row)
+        {
+            $tags[$threadcourse][$row["tag_id"]]=$row;
+        }
     }
+    
     $rows=query("SELECT * FROM harvardcourses WHERE id=?",$threadcourse);
     $course=$rows[0];
     // Retrieves all posts filtered by tags and keywords
@@ -43,7 +48,7 @@
     $replies=[];
     foreach ($rows as $post) 
     {
-        $post["course"]=$course["name"];
+        $post["course"]=ucwords(strtolower($course["department"]))." ".$course["number"];
         $post["course_id"]=$course["id"];
         if ($post["post_id"]==$thread)
         {

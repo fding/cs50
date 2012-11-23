@@ -25,7 +25,9 @@
         $rows=query("SELECT * FROM harvardcourses WHERE id=?",$course);
         $mycourses[intval($course)]=$rows[0];
     }
-    
+    if (!empty($requestmethod["filter"]))
+        $filter=$requestmethod["filter"];
+    else $filter="";
     // Get the tags, keywords, selectedcourses, and sort method
     // Need error checking to make sure that all queries are valid.
     if (empty($requestmethod["tags"]))
@@ -42,6 +44,9 @@
         $sortmethod="post_rating";
     else
         $sortmethod=$requestmethod["sort"];
+    if (!empty($filter))
+        $sortmethod="score";
+        
     $selectedcourses=[];
     $selectedcoursesid=[];
     if (empty($requestmethod["scourses"]))
@@ -81,7 +86,11 @@
     $tags=[];
     foreach ($mycourses as $course)
     {
-        $tags[$course["id"]]=query("SELECT * FROM tagsin".$course["id"]);
+        $rows=query("SELECT * FROM tagsin".$course["id"]);
+        foreach ($rows as $row)
+        {
+            $tags[$course["id"]][$row["tag_id"]]=$row;
+        }
     }
     
     // Create an array to hold all relevant posts,
@@ -92,12 +101,12 @@
     // Retrieves all posts filtered by tags and keywords
     foreach ($selectedcourses as $course)
     {
-        $rows=getposts($course,$selectedtags,$keywords);
+        $rows=getposts($course,$selectedtags,$keywords,$filter);
         if ($rows===null) continue;
         
         foreach ($rows as $post) 
         {
-            $post["course"]=$course["name"];
+            $post["course"]=ucwords(strtolower($course["department"]))." ".$course["number"];
             $post["course_id"]=$course["id"];
             array_push($posts,$post);
             array_push($$sortmethod,$post[$sortmethod]);
@@ -113,7 +122,7 @@
         return;
     }
     
-    function getposts($course, $tags=[], $keywords=[])
+    function getposts($course, $tags=[], $keywords=[], $search)
     {
         // Needs to filter through te tags and keywords, and only return the ones with link=0.
         // Furthermore, it also needs to add reference to answers.
@@ -123,32 +132,49 @@
         {
             $posttags=str_getcsv($row["tags"]); 
             // If $tags is a subset of $posttags
-            if (count(array_diff(array_intersect($tags,$posttags),$tags))==0)
-                array_push($answer,$row);
+            if (count(array_diff($tags,array_intersect($tags,$posttags)))==0)
+            {
+                if (!empty($search))
+                {
+                    $row["score"]=containsword($row, $search);
+                    if ($row["score"]!=0)
+                        array_push($answer,$row);
+                }
+                else
+                        array_push($answer,$row);
+            }
         }
         return $answer;
     }
     
     // Returns 0 if the post is unrelated to word, a positive integer to represent degree of similarity.
-    function containsword($post, $filter)
+    function containsword($post, $search)
     {
-        // Algorithm: A match in the title counts 3 times as much as a match in the actual post.
+        // Algorithm: A match in the title counts 3 times as much as a match in the actual post, in a keyword 5 times
         // Conected strings of words count one extra.
         // Else, each word counts once.
         // If not every word is present, return 0.
-        $token=strtok($filter,' ');
-        $postcontents=file_get_contents("../data/".$question["file"]);
-        $score=0;
-        $wordfound=[];
+        $token=strtok($search,' ');
+        $postcontents=file_get_contents("../data/".$post["file"]);
+        $score=$post["post_rating"];
         while ($token!==false)
         {
-            $rest=strstr($post["title"],$token);
-            $addition=3*substr_count($rest, $token);
+            $wordfound=false;
+            $tlength=strlen($token);
+            $addition=3*$tlength*substr_count($post["post_title"], $token);
             $score+=$addition;
             if ($addition!=0)
-                $wordfound[$token]=true;
-            
+                $wordfound=true;
+            $addition=substr_count($postcontents,$token)*$tlength;
+            $score+=$addition;
+            if ($addition!=0)
+                $wordfound=true;
+            /*
+                TODO: find keyword in keywords
+            */
+            if (!$wordfound) return 0;
             $token=strtok(' ');
         }
+        return $score;
     }
 ?>

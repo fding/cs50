@@ -47,6 +47,10 @@ html, body {
   margin: 5px;
 }
 
+.logo:hover{
+    text-decoration:none;
+}
+
 .container{
     position:relative;
 }
@@ -187,12 +191,13 @@ user-select: none;
 }
 
 #askModal .modal-body {
-	max-height: 800px;
+	max-height: 650px;
 }
 
+
 #askModal {
-	width: 600px; /* SET THE WIDTH OF THE MODAL */
-	margin: -250px 0 0 -300px; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+	width: 650px; /* SET THE WIDTH OF THE MODAL */
+	/*margin: -400px 0 0 -325px; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
 }
 
 .post-thread-view{
@@ -208,7 +213,7 @@ user-select: none;
 }
 
 .post-thread-view-title{
-    position:relative; top: -29px; left:27%;
+    position:relative; top: -29px; left:32%;
 }
 
 .post-thread-view-poster{

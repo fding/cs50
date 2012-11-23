@@ -2,11 +2,7 @@
 
     // configuration
     require("../includes/config.php"); 
-    if($_SERVER["REQUEST_METHOD"] == "GET")
-    {
-        if (isset($_GET["filter"]))
-        $filter=$_GET["filter"];
-    }
+    
     
     // Find out about the current user and his courses
     $rows=query("SELECT * FROM users WHERE id=?",$_SESSION["id"]);

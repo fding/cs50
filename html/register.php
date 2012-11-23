@@ -64,6 +64,9 @@ else if($_SERVER["REQUEST_METHOD"] == "GET")
 			$status["firstname"],$status["lastname"],$status["email"],$status["password"]);
         $row=query("SELECT * FROM users WHERE email=?",$status["email"]);
         $_SESSION["id"]=$row[0]["id"];
+        $_SESSION["firstname"]=$row[0]["firstname"];
+        $file=fopen("../data/users/".$_SESSION["id"]);
+        fclose($file);
         redirect('mycourses.php');
     }
 }

@@ -1,9 +1,12 @@
 <?php if (!empty($question)):?>
+<script>
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub,"thread-container"]);
+</script>
 <div id="thread-container">
     <div class="post-thread-view">
         <div class="post-thread-view-tag">
             <?=$question["course"]?> <i class="icon-chevron-right"></i> 
-            <?=$tags[$question["course_id"]][$question["tags"]-1]["tag_name"]?>
+            <?=$tags[$question["course_id"]][$question["tags"]]["tag_name"]?>
         </div>
         <div class="post-thread-view-title">
             <h4><?=$question["post_title"]?></h4>
