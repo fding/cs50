@@ -16,6 +16,7 @@ require("../includes/config.php");
     foreach ($courses as $course)
     {
         if (empty($course)) break;
+        if ($course=="\n") break;
         $rows=query("SELECT * FROM harvardcourses WHERE id=?",$course);
         $mycourses[intval($course)]=$rows[0];
     }

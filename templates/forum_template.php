@@ -3,7 +3,7 @@
     <div class="post">
         <div class="posttags">
             <?=$post["course"]?> <i class="icon-chevron-right"></i> 
-            <?=$tags[$post["course_id"]][$post["tags"]-1]["tag_name"]?>
+            <?=$tags[$post["course_id"]][$post["tags"]]["tag_name"]?>
         </div>
         <div class="posttitle">
             <a data-course=<?="\"".$post["course_id"]."\""?> data-thread=<?="\"".$post["post_id"]."\""?>> <?=$post["post_title"]?> </a>

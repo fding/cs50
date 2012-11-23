@@ -17,12 +17,12 @@
         
         <script src="js/jquery-1.7.2.min.js"></script>
 
-        <script src="js/scripts.js"></script>
         <script src="js/jquery.cookie.js"></script>
         <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         </script>
         
         <script src="js/bootstrap.js"></script>
+        <script src="js/scripts.js"></script>
         <script src="js/jquery.cookie.js"></script>
         
         <script type="text/x-mathjax-config">
@@ -49,9 +49,11 @@
 				<?php else:?>
 					<div class="span7">
 				<?php endif?>
+				    <a class="logo" href="index.php">
 						<h2 style="position:relative;left:3%;text-shadow: 2px 2px #d3d3d3;font-family:helvetica, sans-serif; color:#A51C30">
 						    Harvard Discuss $$\beta$$
 						</h2>
+					</a>
 					</div>
 				<?php
 					// Display the log out button if the user is log in, and otherwise, displays the register and log in buttons
@@ -65,7 +67,7 @@
 					            <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" style="min-width:130px">
-                                <li><a tabindex="-1" href="logout.php">Manage courses</a></li>
+                                <li><a tabindex="-1" href="mycourses.php">Manage courses</a></li>
                                 <li><a tabindex="-1" href="logout.php">Logout</a></li>
                                 <hr/>
                                 <li><a tabindex="-1" href="logout.php">Feedback</a></li>
@@ -88,7 +90,7 @@
             </div>
         </div>
 		<div id="middle">
-		<?php if (isset($_SESSION["id"])) require("../templates/question_form.php");?>
+		
 	<?php
 		// Render the registration form as a modal if not logged in.
 	?>
