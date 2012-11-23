@@ -19,6 +19,7 @@
             if (empty($rows))
             {
                 print($title." does not appear to be a valid course");
+                fclose($file);
                 die();
             }
             else
@@ -36,9 +37,10 @@
                 /*
                     TODO: Check if user already has the course in his file.
                 */
-                fwrite($file,$course["id"]."\n");
+                
             }
         }
         fclose($file);
+        print("SUCCESS");
     }
 ?>

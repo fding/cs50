@@ -5,20 +5,18 @@
     $rows=query("SELECT * FROM users WHERE id=?",$_SESSION["id"]);
     $row=$rows[0];
     $filepath=$row["file"];
-    $courses=file("../".$filepath);
+    $user=getuser($_SESSION["id"]);
+    if ($user===false)
+        redirect("start.php");
+    else
+        $courses=$user["courses"];
+    $_SESSION["user"]=$user;
     // Finds information about each course
     $mycourses=[];
     
-        $requestmethod="_".$_SERVER["REQUEST_METHOD"];
+    $requestmethod="_".$_SERVER["REQUEST_METHOD"];
     $requestmethod=$$requestmethod;
-    
-    // Find out about the current user and his courses
-    $rows=query("SELECT * FROM users WHERE id=?",$_SESSION["id"]);
-    $row=$rows[0];
-    $filepath=$row["file"];
-    $courses=file("../".$filepath);
     // Finds information about each course
-    $mycourses=[];
     foreach ($courses as $course)
     {
         if (empty($course)) break;
