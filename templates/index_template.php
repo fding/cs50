@@ -92,7 +92,7 @@
 <div class="forum">
     <div id="panel" style="position: relative; width:100%">
         <input type="text" style="width:47%" search-query" id="searchposts" placeholder="Search for posts"/>
-        <div style="position: absolute; top:0%; left: 53%; width:100%">
+        <div style="position: relative; text-align:right; top:-40px; right: 10px; width:100%">
             Sort by
             <div id="sortmethod" class="btn-group">
                 <button id="viewbutton" class="btn">Helpfulness</button>
