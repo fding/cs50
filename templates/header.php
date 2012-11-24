@@ -24,6 +24,7 @@
         <script src="js/bootstrap.js"></script>
         <script src="js/scripts.js"></script>
         <script src="js/jquery.cookie.js"></script>
+        <script src="js/jquery.notification.js"></script>
         
         <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -67,6 +68,7 @@
 					            <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" style="min-width:130px">
+                                <li><a tabindex="-1" href="index.php">Inbox</a></li>
                                 <li><a tabindex="-1" href="mycourses.php">Manage courses</a></li>
                                 <li><a tabindex="-1" href="logout.php">Logout</a></li>
                                 <hr/>

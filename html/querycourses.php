@@ -47,7 +47,7 @@
             if (strpos(strtolower($course["department"]), $token)===0) 
                 $score+=3*$tlength;
             // count how many times the token appears in name, and add to score the total matched characters
-            $score+=substr_count(strtolower($course["name"]),$token)*$tlength;
+            $score+=0.6*substr_count(strtolower($course["name"]),$token)*$tlength;
             // If token and course number begin similarly, add each counted digit 3 times
             if (strpos($course["number"], $token)===0) 
                 $score+=3*$tlength;

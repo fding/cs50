@@ -1,5 +1,7 @@
 
             </div>
+            <div class="push-notification"
+            </div>
 <?php
 /*
             <div id="bottom">

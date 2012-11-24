@@ -65,7 +65,11 @@ else if($_SERVER["REQUEST_METHOD"] == "GET")
         $row=query("SELECT * FROM users WHERE email=?",$status["email"]);
         $_SESSION["id"]=$row[0]["id"];
         $_SESSION["firstname"]=$row[0]["firstname"];
-        $file=fopen("../data/users/".$_SESSION["id"]);
+        $_SESSION["lastname"]=$row[0]["lastname"];
+        $file=fopen("../data/users/".$_SESSION["id"],"w");
+        query("UPDATE users SET file=? WHERE id=?","data/users/".$_SESSION["id"],$_SESSION["id"]);
+        $_SESSION["user"]=getuser($_SESSION["id"]);
+        $_SESSION["user"]["courses"]=[];
         fclose($file);
         redirect('mycourses.php');
     }

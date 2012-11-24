@@ -55,17 +55,6 @@ html, body {
     position:relative;
 }
 
-.thread{
-	border: 1px solid #999;
-	position:absolute;
-	left: 55.1%;
-	top: 0%;
-	width: 44.8%;
-	height:100%;
-	overflow:hidden;
-	overflow-y:auto;
-	overflow-x:hidden;
-}
 
 
 
@@ -90,6 +79,17 @@ html, body {
   height:100%;
 }
 
+.thread{
+	border: 1px solid #999;
+	position:absolute;
+	left: 55.1%;
+	top: 0%;
+	width: 44.8%;
+	height:100%;
+	overflow:hidden;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
 
 
 .course-container{
@@ -99,6 +99,10 @@ html, body {
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;
+}
+
+.tooltip{
+    width:100px;
 }
 
 .course{
@@ -125,7 +129,7 @@ user-select: none;
 
 .post-container{
     margin-top:5px;
-    height:60%;
+    height:100%;
     overflow-y:auto;
 }
 
@@ -226,6 +230,43 @@ user-select: none;
 .post-thread-view-vote{
     position:relative;bottom: 10px;right:-40%;line-height:70%;
 }
+
+.reply-post{
+    position:relative;
+    width:44.6%
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  *border: 1px solid #999;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  padding-left:3px;
+  margin-left:15px;
+  margin-top:5px;
+}
+.reply-post-poster{
+    position:relative;
+}
+.reply-post-body{
+    position:relative;top:2px; left:2%;
+    margin-right:10px;
+}
+.reply-post-vote{
+    position:relative;bottom: 10px;right:-40%;line-height:70%;
+}
+
+#reply{
+    width: 97%;
+    height: 75px;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    *border: 1px solid #999;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    
+}
+
 .upvote{
 position:relative;
 background-image:url('../img/sprite.png');
@@ -253,4 +294,24 @@ text-align:center;
 }
 .downvote:hover{
     text-decoration:none;
+}
+
+.push-notification {
+    background-color: #000;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    color: #fff;
+    padding: 15px 15px 15px 30px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-repeat: no-repeat;
+    background-position: 7px center;
+    opacity: 0;
+    filter: 0;
+    vertical-align: middle;
+    box-shadow: 4px 4px 4px #000;
+    -webkit-box-shadow: 4px 4px 4px #000;
+    -moz-box-shadow: 4px 4px 4px #000;
 }

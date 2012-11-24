@@ -1,5 +1,6 @@
 <?php
     require_once("../includes/functions.php");
+    $sortmethod="post_rating";
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         if (empty($_POST["thread"])){
@@ -12,6 +13,9 @@
             $question=[];
             $replies=[];
             return;
+        }
+        if (!empty($_POST["sort"])){
+            $sortmethod=$_POST["sort"];
         }
         $threadcourse=$_POST["course"];
     }
@@ -28,6 +32,9 @@
             $replies=[];
             return;
         }
+        if (!empty($_GET["sort"])){
+            $sortmethod=$_GET["sort"];
+        }
         $threadcourse=$_GET["course"];
     }
     
@@ -41,11 +48,17 @@
     }
     
     $rows=query("SELECT * FROM harvardcourses WHERE id=?",$threadcourse);
+    if (count($rows)!=1)
+    {
+        print ("Thread does not exist");
+        die();
+    }
     $course=$rows[0];
     // Retrieves all posts filtered by tags and keywords
-    $rows=query("SELECT * FROM postsin".$threadcourse);
+    $rows=query("SELECT * FROM postsin".$threadcourse." WHERE post_id=? OR link=?",$thread,$thread);
     if ($rows===null) render("error_template.php",["message"=> "Thread does not exist"]);
     $replies=[];
+    $$sortmethod=[];
     foreach ($rows as $post) 
     {
         $post["course"]=ucwords(strtolower($course["department"]))." ".$course["number"];

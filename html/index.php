@@ -3,12 +3,8 @@
     // configuration
     require("../includes/config.php"); 
     
-    
-    // Find out about the current user and his courses
-    $rows=query("SELECT * FROM users WHERE id=?",$_SESSION["id"]);
-    $row=$rows[0];
-    $filepath=$row["file"];
-    $courses=file("../".$filepath);
+   
+    $courses=$_SESSION["user"]["courses"];
     // Finds information about each course
     $mycourses=[];
     foreach ($courses as $course)

@@ -14,13 +14,24 @@
                 <option value=pset>pset</option>
                 <option value=essay>essay</option>
             </select>
-            <input id="psetnum" name="psetnum" type="text" style="width: 20px; "></input>
+            <input id="psetnum" name="psetnum" type="text" style="width: 20px; " value=
+            <?php 
+                if (!empty($selectedtags))
+                {
+                    $number=filter_var($tags[$selectedcoursesid[0]][$selectedtags[0]]["tag_name"],FILTER_SANITIZE_NUMBER_INT);
+                    print("\"".$number."\"");
+                }
+                else print ("\"\"");
+            ?>/>
             <select name="courselist" style="width:200px; margin-left:20px;">
                 <option value="">Courses</option>
                 <?php 
                     
                     foreach ($mycourses as $key) 
-                        print("<option value=\"{$key["name"]}\">{$key["name"]}</option>");
+                        if (!empty($selectedcoursesid) && $selectedcoursesid[0]==$key["id"])
+                            print("<option selected=\"selected\" value=\"{$key["name"]}\">{$key["name"]}</option>");
+                        else 
+                            print("<option value=\"{$key["name"]}\">{$key["name"]}</option>");
                 ?>
             </select>
             <span id="submit-error" style="color:red"></span>
@@ -36,7 +47,7 @@
 </div>
 
 <script>
-		$(document).ready( function(){			
+		$(document).ready( function(){
 			$("#submit").click(function(){
 				if ($("input[name=title]").val()=="")
 					$("#submit-error").text("Please enter a title!");
@@ -62,7 +73,10 @@
 					    },
 					    success: function(response)
 					    {
-							    window.location.reload();
+						    submit();
+						    $("#askModal").modal('hide');
+						    $.showmsg("Your question has been posted.");
+						    return true;
 					    }
 				    });
 			    };

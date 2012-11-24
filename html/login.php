@@ -32,7 +32,10 @@
                 // remember that user's now logged in by storing user's ID in session
                 $_SESSION["id"] = $row["id"];
                 $_SESSION["firstname"]=$row["firstname"];
-
+                $_SESSION["lastname"]=$row["lastname"];
+                $_SESSION["user"]=getuser($row["id"]);
+                if ($_SESSION["user"]===false || empty ($_SESSION["user"]["courses"])||empty($_SESSION["user"]["courses"]))
+                    print("NOCOURSES");
                 // redirect to portfolio
                 print("SUCCESS");
                 die();

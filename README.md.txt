@@ -8,13 +8,15 @@ TODO
 
 Task                                    Difficulty/Workload                 Status              IMPORTANCE(1-4)
 Incorporate CS50 courses API            Medium-Difficult                    DONE                4
+    -subtasks
+        1. add an exclude feature to exclude entries from return results
 Search Posts                            Difficult                           DONE                4
 Factor out jscript in index.php         Easy                                DONE                1-2
 Search Courses                          Difficult                           DONE                4
 managecourses.php                       Difficult                           DONE                4
 	-subtasks
-		1. Make addcourse.php more robust.
-		2. Implement removecourse.php
+		1. Make addcourse.php more robust. UNDONE
+		2. Implement removecourse.php      UNDONE
 Enable people to browse other courses	Easy/Medium							UNDONE				4
 Enable edit/delete to own posts 		Difficult							UNDONE				4
 vote.php(handles up/downvotes)          Easy                                UNDONE              4

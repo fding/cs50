@@ -34,12 +34,23 @@
                     createcourseforum($course["id"]);
 	                mkdir("../data/posts/" . $course["id"]);
                 }
-                /*
-                    TODO: Check if user already has the course in his file.
-                */
-                
+                if (!empty($_SESSION["user"]) && !empty($_SESSION["user"]["courses"]) ){
+                    foreach ($_SESSION["user"]["courses"] as $entry)
+                    {
+                        if ($entry==$course["id"])
+                        {
+                            print("Course already added.");
+                            die();
+                        }
+                    }
+                }
+                else
+                    $_SESSION["user"]["courses"]=[];
+                array_push($_SESSION["user"]["courses"],$course["id"]);
+                writeuser($_SESSION["id"],$_SESSION["user"]);
             }
         }
+        $_SESSION["user"]=getuser($_SESSION["id"]);
         fclose($file);
         print("SUCCESS");
     }

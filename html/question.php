@@ -27,17 +27,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         if(count($rows) == 1)
         {
             $courseid = $rows[0]["id"];
+            
+            // TODO NEED TO PROTECT AGAINST SQL INJECTION
+            // TODO NEED TO ENSURE ATOMICITY IN RETREVING MOST RECENT POST ID
             query("INSERT INTO tagsin".$courseid." (tag_type, tag_name) VALUES (?, ?)", $_POST["type"], $_POST["type"].$_POST["psetnum"]);         
-                $tag = query("SELECT * FROM tagsin".$courseid." WHERE tag_name = ?", $_POST["type"].$_POST["psetnum"]);
-                $tagid = $tag[0]["tag_id"];
-                query("INSERT INTO postsin".$courseid." (poster_id, link, poster_firstname, poster_lastname, post_title, tags, post_rating) VALUES (?,?,?,?,?,?,?)", $_SESSION["id"], 0, $firstname, $lastname, $_POST["title"], $tagid, 0); 
-                $post = query("SELECT * FROM postsin".$courseid." ORDER BY post_id DESC LIMIT 1");
-                $postid = $post[0]["post_id"];
-                query("UPDATE postsin".$courseid." SET file = ? WHERE post_id = ?", "posts/".$courseid."/".$postid."/main", $postid);
-                $address = "../data/posts/" . $courseid . "/" . $postid;
-                mkdir($address);
-                $file = fopen($address . "/main", "w");
-                fwrite($file, $_POST["question"]);
+            $tag = query("SELECT * FROM tagsin".$courseid." WHERE tag_name = ?", $_POST["type"].$_POST["psetnum"]);
+            $tagid = $tag[0]["tag_id"];
+            $date = date('Y-m-d H:i:s');
+            query("INSERT INTO postsin".$courseid." (poster_id, link, poster_firstname, poster_lastname, post_title, tags, post_rating, posttime) VALUES (?,?,?,?,?,?,?,?)", $_SESSION["id"], 0, $firstname, $lastname, $_POST["title"], $tagid, 0, $date); 
+            $post = query("SELECT * FROM postsin".$courseid." ORDER BY post_id DESC LIMIT 1");
+            $postid = $post[0]["post_id"];
+            query("UPDATE postsin".$courseid." SET file = ? WHERE post_id = ?", "posts/".$courseid."/".$postid."/main", $postid);
+            $address = "../data/posts/" . $courseid . "/" . $postid;
+            if (!is_dir("../data/posts/" . $courseid))
+                mkdir("../data/posts/" . $courseid);
+            mkdir($address);
+            $file = fopen($address . "/main", "w");
+            fwrite($file, $_POST["question"]);
         }
         else
 	    {
@@ -50,7 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	        $file = fopen("../data/posts/" . $id . "/1/main", "w");
 	        fwrite($file, $_POST["question"]);
 	        query("INSERT INTO tagsin".$id."(tag_type, tag_name) VALUES (?, ?)", $_POST["type"], $_POST["type"].$_POST["psetnum"]);
-            query("INSERT INTO postsin".$id." (poster_id, link, poster_firstname, poster_lastname, post_title, tags, post_rating, file) VALUES (?,?,?,?,?,?,?,?)", $_SESSION["id"], 0, $firstname, $lastname, $_POST["title"], 1, 0, "posts/".$id."/1/main");             
+            $date = date('Y-m-d H:i:s');
+            query("INSERT INTO postsin".$id." (poster_id, link, poster_firstname, poster_lastname, post_title, tags, post_rating, file, posttime) VALUES (?,?,?,?,?,?,?,?,?)", $_SESSION["id"], 0, $firstname, $lastname, $_POST["title"], 1, 0, "posts/".$id."/1/main", $date);             
 	    }
 	}
 }

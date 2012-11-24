@@ -66,6 +66,8 @@ $(document).ready( function(){
 				{
 					if (response=="SUCCESS")
 						window.location.replace("index.php");
+					else if(response=="NOCOURSES")
+					    window.location.replace("mycourses.php");
 					else
 						$('#loginerror').html(response);
 				}

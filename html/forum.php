@@ -1,22 +1,12 @@
 <?php
     require_once("../includes/config.php");
 
-    // Find out about the current user and his courses
-    $rows=query("SELECT * FROM users WHERE id=?",$_SESSION["id"]);
-    $row=$rows[0];
-    $filepath=$row["file"];
-    $user=getuser($_SESSION["id"]);
-    if ($user===false)
-        redirect("start.php");
-    else
-        $courses=$user["courses"];
-    $_SESSION["user"]=$user;
     // Finds information about each course
     $mycourses=[];
-    
+    $courses=$_SESSION["user"]["courses"];
     $requestmethod="_".$_SERVER["REQUEST_METHOD"];
     $requestmethod=$$requestmethod;
-    // Finds information about each course
+    // Finds informatioon about each course
     foreach ($courses as $course)
     {
         if (empty($course)) break;
@@ -93,12 +83,13 @@
     
     // Create an array to hold all relevant posts,
     // and an array representing the column by which we want to sort.
-    $posts=[];
+    $allposts=[];
     $$sortmethod=[];
     
     // Retrieves all posts filtered by tags and keywords
     foreach ($selectedcourses as $course)
     {
+        $posts=[];
         $rows=getposts($course,$selectedtags,$keywords,$filter);
         if ($rows===null) continue;
         
@@ -106,10 +97,30 @@
         {
             $post["course"]=ucwords(strtolower($course["department"]))." ".$course["number"];
             $post["course_id"]=$course["id"];
-            array_push($posts,$post);
-            array_push($$sortmethod,$post[$sortmethod]);
+            if ($post["link"]!=0)
+            {
+                if (empty($posts[$post["link"]]))
+                {
+                    $rows=query("SELECT * FROM postsin".$course["id"]." WHERE post_id=?",$post["link"]);
+                    if (count($rows)==1)
+                    {
+                        $posts[$post["link"]]=$rows[0];
+                        $posts[$post["link"]]["replies"]=[];
+                        array_push($$sortmethod,$rows[0][$sortmethod]);
+                    }
+                    else continue;
+                }
+                array_push($posts[$post["link"]]["replies"],$post);
+            }
+            else{
+                $post["replies"]=[];
+                $posts[$post["post_id"]]=$post;
+                array_push($$sortmethod,$post[$sortmethod]);
+            }
         }
+        $allposts=array_merge($allposts,array_values($posts));
     }
+    $posts=$allposts;
     // Sort the posts by criterion
     array_multisort($$sortmethod,SORT_DESC,$posts);
     if (count($selectedcoursesid)>1)
@@ -136,7 +147,9 @@
                 {
                     $row["score"]=containsword($row, $search);
                     if ($row["score"]!=0)
+                    {
                         array_push($answer,$row);
+                    }
                 }
                 else
                         array_push($answer,$row);
@@ -153,7 +166,7 @@
         // Else, each word counts once.
         // If not every word is present, return 0.
         $token=strtok($search,' ');
-        $postcontents=file_get_contents("../data/".$post["file"]);
+        $postcontents=strip_tags(file_get_contents("../data/".$post["file"]));
         $score=$post["post_rating"];
         while ($token!==false)
         {

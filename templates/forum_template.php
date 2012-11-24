@@ -1,15 +1,21 @@
 
 <?php foreach ($posts as $post):?>
-    <div class="post">
+    <div class="post" data-course="<?=$post["course_id"]?>" data-thread="<?=$post["post_id"]?>">
         <div class="posttags">
             <?=$post["course"]?> <i class="icon-chevron-right"></i> 
             <?=$tags[$post["course_id"]][$post["tags"]]["tag_name"]?>
         </div>
         <div class="posttitle">
-            <a data-course=<?="\"".$post["course_id"]."\""?> data-thread=<?="\"".$post["post_id"]."\""?>> <?=$post["post_title"]?> </a>
+            <?=$post["post_title"]?>
         </div>
         <div class="postauthor">
-            <em>Asked by </em><?=$post["poster_firstname"]." ".$post["poster_lastname"]?>
+            <em>Asked by </em>
+            <?php if ($post["poster_id"]==$_SESSION["id"]):?>
+             me
+            <?php else: ?>
+            <a class="persontag" data-title="Follow <?=$post["poster_firstname"]?>" data-fullname="<?=$post["poster_firstname"]." ".$post["poster_lastname"]?>"><?=$post["poster_firstname"]." ".$post["poster_lastname"]?></a>
+            <?php endif;?>
+            </span>
         </div>
         <div class="postdate">
             <?=$post["posttime"]?>
@@ -17,15 +23,7 @@
     </div>
 <?php endforeach?>
 <script>
-    $(document).ready(function(){
-        $(".post").click(function(){
-            clickedlink=$(this).find("a");
-            changethread(clickedlink.data("course"),clickedlink.data("thread"));
-            }
-        );
-    }
-    );
-    function changethread(thecourse,thethread){
+    function changethread(thecourse,thethread,scrollposition=0){
         $(".thread").html("Loading...");
 		$.ajax({
 			url:'thread.php',
@@ -36,7 +34,7 @@
 			},
 			success: function(response)
 			{
-			    $(".thread").html(response);
+			    $(".thread").html(response).scrollTop(scrollposition);
 			    window.history.pushState(null,'',makeurl(thecourse,thethread))
 			}
 		});

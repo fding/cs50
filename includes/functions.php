@@ -132,6 +132,32 @@
         exit;
     }
 
+    function getuser($userid)
+    {
+        $rows=query("SELECT * FROM users WHERE id=?",$userid);
+        if (count($rows)!=1) return false;
+        $user=$rows[0];
+        
+        $contents=file_get_contents("../".$user["file"]);
+        $user=json_decode($contents,true);
+        if (!isset($user["courses"]))
+            $user["courses"]=[];
+        return $user;
+    }
+    
+    function writeuser($userid,$user)
+    {
+        $rows=query("SELECT * FROM users WHERE id=?",$userid);
+        if (count($rows)!=1) return false;
+        if (!file_exists("../".$rows[0]["file"])) 
+        {
+            $file=fopen("../".$rows[0]["file"],'w');
+            fclose($file);
+        }
+        file_put_contents("../".$rows[0]["file"],json_encode($user));
+        return true;
+    }
+    
     /**
      * Renders template, passing in values.
      */
