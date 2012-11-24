@@ -216,8 +216,12 @@ user-select: none;
   padding-left:3px;
 }
 
+.post-thread-view-tag{
+    position: relative;
+}
+
 .post-thread-view-title{
-    position:relative; top: -29px; left:32%;
+    position:relative; top: -29px; left:52%;
 }
 
 .post-thread-view-poster{
