@@ -1,6 +1,8 @@
 <?php
     require_once("../includes/functions.php");
     $sortmethod="post_rating";
+    $question=[];
+    $replies=[];
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         if (empty($_POST["thread"])){

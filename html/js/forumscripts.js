@@ -70,6 +70,33 @@
                 changethread($(this).data("course"),$(this).data("thread"));
             }
         });
+        
+        $(".thread").on("click",".removepost",function(e)
+        {
+            sender=$(e.target);
+            
+            $.ajax({
+                url: "deletepost.php",
+                type: "POST",
+                data: {
+                    courseid:sender.data("course"),
+                    postid:sender.data("postid")
+                },
+                success:function(response){
+                    if (response=="SUCCESS")
+                    {
+                        $.showmsg("Deletion succesful");
+                        submit();
+                    }
+                    else
+                    {
+                        $.showmsg(response);
+                    }
+                }
+            }
+            );
+        });
+        
         $('.upvote').click( function(e) {
             e.preventDefault();
             sender = $(this);

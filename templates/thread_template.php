@@ -4,7 +4,8 @@
 </script>
 <div id="thread-container">
     <div class="post-thread-view">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" style="z-index:-1" class="close removepost" data-dismiss="modal" aria-hidden="true"
+    data-course="<?=$question["course_id"]?>" data-postid="<?=$question["post_id"]?>">×</button>
         <div class="post-thread-view-tag">
             <?=$question["course"]?> <i class="icon-chevron-right"></i> 
             <?=$tags[$question["course_id"]][$question["tags"]]["tag_name"]?>
@@ -29,6 +30,8 @@
     </div>
     <?php foreach($replies as $reply):?>
         <div class="reply-post">
+    <button type="button" style="z-index:-1" class="close removepost" data-dismiss="modal" aria-hidden="true"
+    data-course="<?=$reply["course_id"]?>" data-postid="<?=$question["post_id"]?>">×</button>
         <div class="reply-post-poster">
             <em><?=$reply["poster_firstname"]." ".$reply["poster_lastname"]?></em>
         </div>
