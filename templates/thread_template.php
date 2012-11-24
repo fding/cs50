@@ -5,7 +5,7 @@
 <div id="thread-container">
     <div class="post-thread-view">
     <button type="button" style="z-index:-1" class="close removepost" data-dismiss="modal" aria-hidden="true"
-    data-course="<?=$question["course_id"]?>" data-postid="<?=$question["post_id"]?>">×</button>
+    data-course="<?=$question["course_id"]?>" data-postid="<?=$question["post_id"]?>">&times;</button>
         <div class="post-thread-view-tag">
             <?=$question["course"]?> <i class="icon-chevron-right"></i> 
             <?=$tags[$question["course_id"]][$question["tags"]]["tag_name"]?>
@@ -52,7 +52,6 @@
 <div>
     <h4>Reply</h4>
     <textarea id = "reply" name="reply" placeholder="Reply..."></textarea>   
-    <input id="file" name="file" placeholder="File..." type="text" style="width: 97%"></input>
     <button class="btn btn-primary" id="replysubmit">Submit</button>
 </div>
 

@@ -18,7 +18,10 @@
             </span>
         </div>
         <div class="postdate">
-            <?=$post["posttime"]?>
+            <?php $posttime = strtodate($post["posttime"]); ?>
+            
+            <?php $diff = query("SELECT DATEDIFF(?,NOW()) AS DiffDate", $post["posttime"]);?>
+            <?= $diff[0]["DiffDate"]; ?> days ago
         </div>
     </div>
 <?php endforeach?>

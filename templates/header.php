@@ -2,7 +2,6 @@
 
 <html>
     <head>
-        
         <?php if (isset($title)): ?>
             <title>Harvard Discuss: <?= htmlspecialchars($title) ?></title>
         <?php else: ?>
@@ -33,35 +32,41 @@
         </script>
         <script src="js/wysihtml5-0.3.0.js"></script>
         <script src="js/bootstrap-wysihtml5.js"></script>
-
     </head>
-
     <body>
 
-        <div class="container-fluid">
-
             <div id="top">
-				<div class="row-fluid">
 				<?php
 					// Since there are more buttons before user logs in, we can adjust format accordingly.
 				?>
 				<?php if (isset($_SESSION["id"])):?>
-					<div class="span9">
 				<?php else:?>
-					<div class="span7">
 				<?php endif?>
 				    <a class="logo" href="index.php">
-						<h2 style="position:relative;left:3%;text-shadow: 2px 2px #d3d3d3;font-family:helvetica, sans-serif; color:#A51C30">
-						    Harvard Discuss $$\beta$$
-						</h2>
+				        <img src="../img/crimsondiscuss.png"/>
 					</a>
-					</div>
-				<?php
-					// Display the log out button if the user is log in, and otherwise, displays the register and log in buttons
-				?>
-				
+			    <?php if(isset($_SESSION["id"])):?>
+			            
+			            <div style="position:fixed; left:240px;top:15px;">
+		                    <a href="#"><i class="icon-bookmark icon-white"></i></a>
+		                    <a href="#"><i class="icon-comment icon-white"></i></a>
+		                    <a href="#"><i class="icon-inbox icon-white"></i></a>
+			            </div>
+                        <input type="text" style="position: fixed; width:25%; left: 305px;top:5px;" search-query" id="searchposts" placeholder="Search for posts"/>
+                        <div style="position: relative; text-align:left; top:-42px; left: 56%; width:150px">
+                            <div id="sortmethod" class="btn-group">
+                                <button id="viewbutton" class="btn">Helpfulness</button>
+                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+			                        <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="min-width:130px">
+                                    <li><a tabindex="-1" href="">Date</a></li>
+                                </ul>
+                            </div>
+                        </div>
+			    <?php endif;?>
 				<?php if (isset($_SESSION["id"])):?>
-					<div style="margin:5px; position:relative; right:-5%;">
+					<div style="margin:5px; position:fixed; width:300px; top:0%; right:2%; text-align:right;">
 					    <div class="btn-group">
                             <button class="btn">Hi, <?=$_SESSION["firstname"]?>!</button>
                             <button class="btn dropdown-toggle" data-toggle="dropdown">
@@ -89,8 +94,6 @@
 				<?php endif ?>
 					</div>
 				</div>
-            </div>
-        </div>
 		<div id="middle">
 		
 	<?php
@@ -100,5 +103,3 @@
 	    require("../templates/registration_template.php");
 	    
 	?>
-
-

@@ -31,6 +31,7 @@
     <div class="course-container">
 <?php foreach ($mycourses as $course):?>
 		<div class="course" id=<?="\"coursebox".$course["id"]."\""?>>
+	    <button type="button" class="close removecourse" aria-hidden="true" data-course="<?=$course["id"]?>">&times;</button>
 	<?php
 		// Tag for the course itself
 	?>
@@ -72,6 +73,7 @@
 				});
 			</script>
 		</div>
+
 <? endforeach;?>
 		<script>
 			$(document).ready(function(){
@@ -81,30 +83,76 @@
 		        <?php if(!empty($selectedtags)):?>
 				    $(<?="\"#tag".$selectedtags[0]."-course".$selectedcoursesid[0]."\""?>).addClass("active");
 		        <?php endif;?>
+		    
+	            $(".course").on("click",".removecourse",function(e)
+                {
+
+                    sender=$(e.target);
+                    
+                    $.ajax({
+                        url: "removecourse.php",
+                        type: "POST",
+                        data: {
+                            course:sender.data("course")
+                        },
+                        success:function(response){
+                            if (response=="SUCCESS")
+                            {
+                                $.showmsg("Deletion succesful");
+                                submit();
+                                window.location = "index.php";
+                            }
+                            else
+                            {
+                                $.showmsg(response);
+                            }
+                        }
+                    });
+                });
 		    });
 		</script>
 	</div>
+	
+	    <br>
+	    
+        <div>
+            <form>
+                <input type="text" data-id="1" id="newclass" class="findcourse" data-provide="typeahead" placeholder="Add new classes" style="padding:4px">
+                <button class="btn btn-medium btn-success addcoursebutton" type="button">Add</button>
+		    </form>
+		    <script>
+		        $(document).ready(function(){
+                    $(".addcoursebutton").hide();
+            
+                    $(".addcoursebutton").click(function(){
+                        sender=$(this);
+			            $.ajax({
+				            url:'addcourse.php',
+				            type: 'POST',
+				            data:{
+				                course:$("#newclass").val()
+				            },
+				            success: function(response){
+				                if (response=="SUCCESS")
+				                {
+					                location.reload();
+        						    $.showmsg("Your course has been added.");
+					            }
+					            else 
+					                $.showmsg(response);
+				            }
+			            });
+                    });
+                });
+            </script>
+        </div>
 </div>
+
 
 <?php
     // The control panel: searchbox, and sort method
 ?>
 <div class="forum">
-    <div id="panel" style="position: relative; width:100%">
-        <input type="text" style="width:47%" search-query" id="searchposts" placeholder="Search for posts"/>
-        <div style="position: relative; text-align:right; top:-40px; right: 10px; width:100%">
-            Sort by
-            <div id="sortmethod" class="btn-group">
-                <button id="viewbutton" class="btn">Helpfulness</button>
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-			        <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" style="min-width:130px">
-                    <li><a tabindex="-1" href="">Date</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
     
     <?php
         // The gigantic box that contains links to all posts
