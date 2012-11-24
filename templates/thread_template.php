@@ -4,6 +4,7 @@
 </script>
 <div id="thread-container">
     <div class="post-thread-view">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <div class="post-thread-view-tag">
             <?=$question["course"]?> <i class="icon-chevron-right"></i> 
             <?=$tags[$question["course_id"]][$question["tags"]]["tag_name"]?>

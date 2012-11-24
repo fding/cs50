@@ -23,7 +23,8 @@
     </div>
 <?php endforeach?>
 <script>
-    function changethread(thecourse,thethread,scrollposition=0){
+    function changethread(thecourse,thethread,scrollposition){
+        if (typeof(scrollposition)=="undefined") scrollposition=0;
         $(".thread").html("Loading...");
 		$.ajax({
 			url:'thread.php',
