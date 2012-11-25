@@ -47,39 +47,39 @@
 </div>
 
 <script>
-		$(document).ready( function(){
-			$("#submit").click(function(){
-				if ($("input[name=title]").val()=="")
-					$("#submit-error").text("Please enter a title!");
-				else if ($("textarea[name=question]").val()=="")
-					$("#submit-error").text("Please enter a question!");
-				else if ($("select[name=type]").val()=="")
-					$("#submit-error").text("Please enter a tag type!");
-				else if ($("input[name=psetnum]").val()=="")
-					$("#submit-error").text("Please enter a tag number!");
-				else if ($("select[name=courselist]").val()=="")
-					$("#submit-error").text("Please select a course!");
-				else
-				{
-				    $.ajax({
-					    url:'question.php',
-					    type: 'POST',
-					    data:{
-						    title: $("input[name=title]").val(),
-						    question: $("textarea[name=question]").val(),
-						    type: $("select[name=type]").val(),
-						    psetnum: $("input[name=psetnum]").val(),
-						    course: $("select[name=courselist]").val()
-					    },
-					    success: function(response)
-					    {
-						    submit();
-						    $("#askModal").modal('hide');
-						    $.showmsg("Your question has been posted.");
-						    return true;
-					    }
-				    });
-			    };
-	        });
+	$(document).ready( function(){
+		$("#submit").click(function(){
+			if ($("input[name=title]").val()=="")
+				$("#submit-error").text("Please enter a title!");
+			else if ($("textarea[name=question]").val()=="")
+				$("#submit-error").text("Please enter a question!");
+			else if ($("select[name=type]").val()=="")
+				$("#submit-error").text("Please enter a tag type!");
+			else if ($("input[name=psetnum]").val()=="")
+				$("#submit-error").text("Please enter a tag number!");
+			else if ($("select[name=courselist]").val()=="")
+				$("#submit-error").text("Please select a course!");
+			else
+			{
+			    $.ajax({
+				    url:'question.php',
+				    type: 'POST',
+				    data:{
+					    title: $("input[name=title]").val(),
+					    question: $("textarea[name=question]").val(),
+					    type: $("select[name=type]").val(),
+					    psetnum: $("input[name=psetnum]").val(),
+					    course: $("select[name=courselist]").val()
+				    },
+				    success: function(response)
+				    {
+					    submit();
+					    $("#askModal").modal('hide');
+					    $.showmsg("Your question has been posted.");
+					    return true;
+				    }
+			    });
+		    };
         });
+    });
 </script>

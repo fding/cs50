@@ -9,7 +9,10 @@
     position: absolute;
     width:99.9%;
     top:0px;
-    bottom:60px;
+    bottom:40px;
+    height:40px;
+    z-index:2;
+    background-color:#A51C30;
 }
 
 #middle
@@ -19,8 +22,9 @@
     position: absolute;
     width:99.9%;
     top:40px;
-    bottom:10px;
+    bottom:0px;
     background-color:#FFFFFF;
+    z-index:0;
 }
 
 #bottom
@@ -35,19 +39,24 @@
 
 html, body {
     margin: 0px;
-    background-color:#FFFFFF;
     padding: 0px;
     overflow: hidden; 
     overflow-x:auto;
-    background-color:#A51C30;
+    background-color:#ffffff;
 }
 
 #thread-container{
   position:relative;
-  padding-left:1%;
-  padding-right:1%;
-  padding-top:1%;
-  margin: 5px;
+  padding:1%;
+  margin-left: 5px;
+  margin-top: 5px;
+  margin-right:0px;
+  margin-bottom:-20px;
+  max-height:562px;
+  top:-10px;
+	overflow:hidden;
+	overflow-y:auto;
+	overflow-x:hidden;
 }
 
 .logo:hover{
@@ -63,16 +72,22 @@ html, body {
 
 .navigation{
   border: 1px solid #999;
+ /* 
+  float:left;*/
   position:absolute;
+  width: 15.9%;
   left: 0%;
   top: 0%;
-  width: 15.9%;
+  background-color:#ffffff;
   padding-left:1%;
   padding-right:1%;
+  padding-top:1%;
   height:100%;
 }
 .forum{
   border: 1px solid #999;
+  /*
+  float:left;*/
   position:absolute;
   left: 18%;
   top: 0%;
@@ -87,11 +102,14 @@ html, body {
 	position:absolute;
 	left: 55.1%;
 	top: 0%;
-	width: 44.8%;
+	/*
+	float:right;*/
 	height:100%;
+	width: 44.55%;
 	overflow:hidden;
-	overflow-y:auto;
-	overflow-x:hidden;
+	padding:1%;
+	padding-right:0%;
+	padding-left:0%;
 }
 
 
@@ -131,14 +149,17 @@ user-select: none;
 }
 
 .post-container{
-    margin-top:5px;
-    height:80%;
+    /*margin-top:5px;*/
+    position:relative;
+    left:0%;
+	width: 100%;
+    top:0px;
+    bottom:10px;
     overflow:hidden;
     overflow-y:auto;
 }
 
 .discusstag{
-
   background-color: #002faa;
   *background-color: #003bb3;
 }
@@ -169,6 +190,10 @@ user-select: none;
   top: -50%;
   left:60%;
   color: black;
+  width:38%;
+	white-space: nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .postauthor{
@@ -184,7 +209,7 @@ user-select: none;
     margin-top: 2px;
     margin-right: 5px;
     position: absolute;
-    left: 50%;
+    left: 60%;
     top: 50%;
 }
 
@@ -222,19 +247,33 @@ user-select: none;
 
 .post-thread-view-tag{
     position: relative;
-    width:160px;
+    width:160px; display:inline;
 }
 
 .post-thread-view-title{
-    position:relative; top: -29px; left:180px; text-align:left; width:180px
+    position:relative; text-align:left; 
+    left:20px;
+    font-size:15px;
+    font-weight:bold;
+    width:20%;
+    display:inline;
+    
+    
+    margin-top:2px;
 }
 
 .post-thread-view-poster{
-    position:relative; top: -58px; right:20px; text-align:right;
+    float:right;
+    position:relative; 
+     text-align:right;
+    
 }
 .post-thread-view-body{
-    position:relative;top:-40px; left:2%;
+    position:relative;left:2%;
     margin-right:10px;
+}
+.own{
+right:35px; 
 }
 .post-thread-view-vote{
     position:relative;bottom: 10px;right:-40%;line-height:70%;
@@ -325,4 +364,29 @@ text-align:center;
     box-shadow: 4px 4px 4px #000;
     -webkit-box-shadow: 4px 4px 4px #000;
     -moz-box-shadow: 4px 4px 4px #000;
+}
+.addcoursebutton{
+    width:28px;
+    padding-left:8px;
+    font-weight:bold;
+    color:#999;
+    display:none;
+}
+.addcoursebutton:hover{/*
+    text-decoration:none;
+    color:#555;*/
+}
+
+#reply-collapse{
+    background-color:#ededed; 
+    margin:0;
+    height:25px;
+    line-height:200%;
+}
+#reply-collapse:hover{
+    background-color:#dddddd; 
+cursor:pointer;
+}
+#reply-area{
+    padding:10px;
 }

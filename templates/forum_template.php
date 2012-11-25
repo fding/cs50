@@ -1,4 +1,4 @@
-
+<?php if (!empty($posts)): ?>
 <?php foreach ($posts as $post):?>
     <div class="post" data-course="<?=$post["course_id"]?>" data-thread="<?=$post["post_id"]?>">
         <div class="posttags">
@@ -15,46 +15,34 @@
             <?php else: ?>
             <a class="persontag" data-title="Follow <?=$post["poster_firstname"]?>" data-fullname="<?=$post["poster_firstname"]." ".$post["poster_lastname"]?>"><?=$post["poster_firstname"]." ".$post["poster_lastname"]?></a>
             <?php endif;?>
-            </span>
         </div>
         <div class="postdate">
-            <?php $posttime = strtodate($post["posttime"]); ?>
-            
-            <?php $diff = query("SELECT DATEDIFF(?,NOW()) AS DiffDate", $post["posttime"]);?>
-            <?= $diff[0]["DiffDate"]; ?> days ago
+            <?php $posttime = strtotime($post["posttime"]); 
+            $now = time();
+            $diff=$now-$posttime;
+            if($diff < 60)
+                print($diff." seconds ago");
+            else if($diff < 60*60)
+            {
+                $diff = round($diff / 60);
+                print($diff." minutes ago");
+            }
+            else if($diff < 60*60*24)
+            {
+                $diff = round($diff/ (60*60));
+                print($diff." hours ago");
+            }
+            else if($diff < 60*60*24*365)
+            {
+                $diff = round($diff/ (60*60*24));
+                print($diff." days ago");
+            }
+            else
+            {
+                $diff = round($diff/ (60*60*24*365));
+                print($diff." years ago");
+            }?>
         </div>
     </div>
 <?php endforeach?>
-<script>
-    function changethread(thecourse,thethread,scrollposition){
-        if (typeof(scrollposition)=="undefined") scrollposition=0;
-        $(".thread").html("Loading...");
-		$.ajax({
-			url:'thread.php',
-			type: 'POST',
-			data:{
-			    thread:thethread,
-			    course:thecourse
-			},
-			success: function(response)
-			{
-			    $(".thread").html(response).scrollTop(scrollposition);
-			    window.history.pushState(null,'',makeurl(thecourse,thethread))
-			}
-		});
-    }
-    function makeurl(thecourse,thethread){
-        url= "index.php?";
-        <?php if (!empty($selectedcoursesid)):?>
-            url+="scourses="+<?="\"".$selectedcoursesid[0]."\""?>+"&";
-        <?php endif;?>
-        <?php if (!empty($selectedtags)):?>
-            url+="tags="+<?="\"".$selectedtags[0]."\""?>+"&";
-        <?php endif;?>
-        <?php if (!empty($sortmethod)):?>
-            url+="sort="+<?="\"".$sortmethod."\""?>+"&";
-        <?php endif;?>
-        url+="course="+thecourse+"&thread="+thethread;
-        return url;
-    }
-</script>
+<?php endif;?>

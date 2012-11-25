@@ -107,9 +107,9 @@ END_OF_EMAIL;
     $headers .= 'To: <'.$_POST["email"].'>'."\r\n";
     
     $headers .= 'From: <discuss@harvarddiscuss.com>';
-    $status=mail($to,$subject,$message,$headers);
+   /* $status=mail($to,$subject,$message,$headers);
     print ($headers);
     print ($message);
-    return $status;
+    return $status;*/
 }
 ?>

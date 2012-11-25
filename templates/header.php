@@ -2,12 +2,11 @@
 
 <html>
     <head>
-        <?php if (isset($title)): ?>
-            <title>Harvard Discuss: <?= htmlspecialchars($title) ?></title>
-        <?php else: ?>
-            <title>Harvard Discuss</title>
-        <?php endif ?>
-        
+    <?php if (isset($title)): ?>
+        <title>Harvard Discuss: <?= htmlspecialchars($title) ?></title>
+    <?php else: ?>
+        <title>Harvard Discuss</title>
+    <?php endif ?>
         <link href="css/bootstrap.css" rel="stylesheet"/>
         <link href="css/bootstrap-responsive.css" rel="stylesheet"/>
 
@@ -43,7 +42,7 @@
 				<?php else:?>
 				<?php endif?>
 				    <a class="logo" href="index.php">
-				        <img src="../img/crimsondiscuss.png"/>
+				        <img  style="height:40px" src="../img/crimsondiscuss.png"/>
 					</a>
 			    <?php if(isset($_SESSION["id"])):?>
 			            
@@ -52,18 +51,19 @@
 		                    <a href="#"><i class="icon-comment icon-white"></i></a>
 		                    <a href="#"><i class="icon-inbox icon-white"></i></a>
 			            </div>
-                        <input type="text" style="position: fixed; width:25%; left: 305px;top:5px;" search-query" id="searchposts" placeholder="Search for posts"/>
-                        <div style="position: relative; text-align:left; top:-42px; left: 56%; width:150px">
-                            <div id="sortmethod" class="btn-group">
+			            <div class="input-append" style="position: fixed; left: 305px;top:5px;"> 
+                            <input type="text"  search-query" id="searchposts" placeholder="Search for posts"/>
+                        
+                            <div id="sortmethod" class="btn-group" >
                                 <button id="viewbutton" class="btn">Helpfulness</button>
                                 <button class="btn dropdown-toggle" data-toggle="dropdown">
 			                        <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu" style="min-width:130px">
+                                <ul class="dropdown-menu" style="min-width:130px" style="z-index:50;">
                                     <li><a tabindex="-1" href="">Date</a></li>
                                 </ul>
                             </div>
-                        </div>
+                         </div>
 			    <?php endif;?>
 				<?php if (isset($_SESSION["id"])):?>
 					<div style="margin:5px; position:fixed; width:300px; top:0%; right:2%; text-align:right;">
@@ -72,7 +72,7 @@
                             <button class="btn dropdown-toggle" data-toggle="dropdown">
 					            <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" style="min-width:130px">
+                            <ul class="dropdown-menu" style="min-width:130px;text-align:left;">
                                 <li><a tabindex="-1" href="index.php">Inbox</a></li>
                                 <li><a tabindex="-1" href="mycourses.php">Manage courses</a></li>
                                 <li><a tabindex="-1" href="logout.php">Logout</a></li>

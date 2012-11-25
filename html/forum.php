@@ -1,4 +1,6 @@
 <?php
+    // What should happen if the user enters address for a forum that doesn't exist yet?
+    
     require_once("../includes/config.php");
 
     // Finds information about each course
@@ -48,7 +50,9 @@
         foreach ($selectedcoursesid as $id)
         {
             $rows=query("SELECT * FROM harvardcourses WHERE id=?",$id);
-            $selectedcourses[$id]=$rows[0];
+            if (count($rows)!=1)
+                $selectedcourses=[];
+            else $selectedcourses[$id]=$rows[0];
         }
     }
     // Find all tags corresponding to selected courses.
@@ -61,18 +65,18 @@
     // Create an array to hold all relevant posts,
     // and an array representing the column by which we want to sort.
     $posts=[];
-    $$sortmethod=[];
+    $$sortmethod=[];/*
     foreach ($courses as $course)
     {
         if (empty($course)) break;
         $rows=query("SELECT * FROM harvardcourses WHERE id=?",$course);
         $mycourses[intval($course)]=$rows[0];
-    }
+    }*/
     
     
     // Find all tags corresponding to selected courses.
     $tags=[];
-    foreach ($mycourses as $course)
+    foreach ($selectedcourses as $course)
     {
         $rows=query("SELECT * FROM tagsin".$course["id"]);
         foreach ($rows as $row)
@@ -147,9 +151,7 @@
                 {
                     $row["score"]=containsword($row, $search);
                     if ($row["score"]!=0)
-                    {
                         array_push($answer,$row);
-                    }
                 }
                 else
                         array_push($answer,$row);
