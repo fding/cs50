@@ -61,15 +61,21 @@ $(document).ready(function(){
 		        });
         }
     });
-    $('.findperson').typeahead({
+    initpersonbox();
+}
+);
+
+function initpersonbox()
+{
+$('.findperson').typeahead({
         updater: function(element){ 
-            $(".addfollowbutton").show();
+            $(".oncompleteP").show();
             return element;
         },
         matcher: function(){ return true;},
         minLength: 1,
         source: function (query, process) {
-            $(".addfollowbutton").hide();
+            $(".oncompleteP").hide();
             $.ajax({
 			        url:'querypeople.php',
 			        type: 'POST',
@@ -91,4 +97,3 @@ $(document).ready(function(){
         }
     });
 }
-)

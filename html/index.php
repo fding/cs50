@@ -27,14 +27,18 @@
         $keywords=$_GET["keywords"];
     
     if (empty($_GET["sort"]))
-        $sortmethod="post_rating";
+        $sortmethod="helpfulness";
     else
         $sortmethod=$_GET["sort"];
-        
+    require('menu.php');
     require('forum.php');
     require('thread.php');
+    if (empty($selectedcourses))
+        $selectedcourse=[];
+    else
+        $selectedcourse=$selectedcourses[$selectedcoursesid[0]];
     render("index_template.php", ["title" => "Harvard Discuss",
-    "selectedcoursesid"=>$selectedcoursesid,"selectedtags"=>$selectedtags, "tags"=>$tags, 
+    "selectedcourse"=>$selectedcourse,"selectedtags"=>$selectedtags, "tags"=>$tags, 
     "mycourses"=>$mycourses, "posts" =>$posts,"question"=>$question, "replies" =>$replies, "sortmethod" => $sortmethod]);
     
 ?>

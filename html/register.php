@@ -24,12 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	
 		$confcode=md5(uniqid(rand())); 
 	
-		if ($status===false)
-		{
-			print("You seemed to have registered already");
-			die();
-		}
-		else
+		if ($status!==false)
 		{
 			$status=query("INSERT INTO unactivated_users (firstname,lastname,email,password,confirmationcode)
 			VALUES(?,?,?,?,?)",$_POST["firstname"],$_POST["lastname"],$_POST["email"],crypt($_POST["password"]),$confcode);
@@ -39,6 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				the confirmation code");
 				die();
 			}
+		}
+		else
+		{
+			print("You seemed to have registered already");
+			die();
 		}
 		
 
@@ -56,10 +56,13 @@ else if($_SERVER["REQUEST_METHOD"] == "GET")
         render("register_form.php", ["title"=>"Registration Error"]);
     else
     {
-        $status=query("SELECT * FROM unactivated_users WHERE confirmationcode=?",$_GET["confirmation"]);
+        $status=query("SELECT * FROM unactivated_users WHERE email=?",$_GET["email"]);
         if ($status===false)
 			render("register_form.php", ["title"=>"Registration Error"]);
+			
         $status=$status[0];
+        if ($status["confirmationcode"]!=$_GET["confirmation"])
+        	render("register_form.php", ["title"=>"Registration Error"]);
         query("INSERT INTO users (firstname,lastname,email,password) VALUES(?,?,?,?)",
 			$status["firstname"],$status["lastname"],$status["email"],$status["password"]);
         $row=query("SELECT * FROM users WHERE email=?",$status["email"]);
@@ -71,7 +74,7 @@ else if($_SERVER["REQUEST_METHOD"] == "GET")
         $_SESSION["user"]=getuser($_SESSION["id"]);
         $_SESSION["user"]["courses"]=[];
         fclose($file);
-        redirect('mycourses.php');
+        redirect('index.php');
     }
 }
 else
@@ -83,33 +86,38 @@ else
 // Code to send confirmation email.
 function sendCode($code)
 {
+	$url="http://www.crimsondiscuss.com/register.php?confirmation=".rawurlencode($code)."&email=".rawurlencode($_POST["email"]);
     $message=<<<END_OF_EMAIL
 Hello {$_POST["firstname"]}! 
-
-You recently registered for Harvard Discuss. If it was not you who registered for Harvard Disucss, please disregard this email
-(but make sure to check us out!)
-
+<p>
+You recently registered for Crimson Discuss. 
+If it was not you who registered for Crimson Discuss, 
+please disregard this email
+(but make sure to check us out)!
+</p>
+<p>
 To complete registration, please
-<a href="http://www.harvarddiscuss.net/register.php?confirmation={$code}">click here</a>,
-or copy and paste the address (http://www.harvarddiscuss.net/register.php?confirmation={$code}) manually into your broswer.
-
-Thanks!
-The Harvard Discuss Team
+<a href="{$url}">
+click here
+</a>,
+or copy and paste the address ({$url}) manually into your broswer.
+</p>
+<p>
+So that you will receive updates and alerts in the future, 
+we ask that you add us to contacts to avoid future emails being marked as spam. 
+You will have the option to set how much email you want to receive once you complete your registration.
+</p>
+<p>
+Thanks!<br/>
+The Crimson Discuss Team
+</p>
 END_OF_EMAIL;
-
-    $message=wordwrap($message,70);
     
-    $to=$_POST["email"];
+    $to="\"{$_POST["firstname"]} {$_POST["lastname"]}\" <".$_POST["email"].">";
     $subject="Registration for Harvard Discuss";
     $headers  = 'MIME-Version: 1.0' . "\r\n";
     $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-
-    $headers .= 'To: <'.$_POST["email"].'>'."\r\n";
-    
-    $headers .= 'From: <discuss@harvarddiscuss.com>';
-   /* $status=mail($to,$subject,$message,$headers);
-    print ($headers);
-    print ($message);
-    return $status;*/
+   $status=mail($to,$subject,$message,$headers);
+   return $status;
 }
 ?>

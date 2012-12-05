@@ -16,6 +16,7 @@
      * Facilitates debugging by dumping contents of variable
      * to browser.
      */
+     
     function dump($variable)
     {
         require("../templates/dump.php");
@@ -158,6 +159,44 @@
         return true;
     }
     
+        function hasaccess(&$post)
+    {
+        $privacy=str_getcsv($post["privacy"]);
+        if (empty($privacy)) return true;
+        switch ($privacy[0]){
+            case 0:
+                return true;
+                break;
+            case 1:
+                if ($post["poster_id"]!=$_SESSION["id"])
+                {
+                    $post["poster_firstname"]="Anonymous";
+                    $post["poster_lastname"]="";
+                }
+                return true;
+                break;
+            case 3:
+                $canbeseen=false;
+                if ($post["poster_id"]==$_SESSION["id"])
+                    $canbeseen=true;
+                $post["privateto"]=[];
+                foreach (array_slice($privacy,1) as $person)
+                {
+                    $rows=query("SELECT firstname,lastname FROM users WHERE id=?",$person);
+                    if (empty($rows)) continue;
+                    array_push($post["privateto"],$rows[0]["firstname"]." ".$rows[0]["lastname"]);
+                    if ($_SESSION["id"]==$person)
+                    {
+                        $canbeseen=true;
+                    }
+                }
+                return $canbeseen;
+                break;
+            default:
+                return true;
+        }
+    }
+    
     /**
      * Renders template, passing in values.
      */
@@ -212,6 +251,32 @@
 			)"
 		);
     }
-    
+    function getusercourses()
+    {
+        $mycourses=[];
+        $courses=$_SESSION["user"]["courses"];
+        foreach ($courses as $course)
+        {
+        if (empty($course)) break;
+        $rows=query("SELECT * FROM harvardcourses WHERE id=?",$course);
+        if (empty($rows))
+        {
+            $validcourses=query("SELECT * FROM allharvardcourses WHERE id=?",$course);
+            if (empty($validcourses))
+            {
+                redirect("error.php?code=404");
+                return;
+            }
+            query("INSERT INTO harvardcourses (id, name, department, cat_num, term, number) VALUES
+                    (?,?,?,?,?,?)",$validcourses[0]["id"], $validcourses[0]["name"], $validcourses[0]["department"], 
+                    $validcourses[0]["cat_num"],$validcourses[0]["term"], $validcourses[0]["number"]);
+            createcourseforum($validcourses[0]["id"]);
+            mkdir("../data/posts/" . $validcourses[0]["id"]); 
+            $rows=$validcourses; 
+        }
+        $mycourses[intval($course)]=$rows[0];
+        }
+        return $mycourses;
+    }
 
 ?>

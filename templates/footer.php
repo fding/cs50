@@ -1,6 +1,6 @@
 
             </div>
-            <div class="push-notification"
+            <div class="push-notification">
             </div>
 <?php
 /*

@@ -2,19 +2,9 @@
     // What should happen if the user enters address for a forum that doesn't exist yet?
     
     require_once("../includes/config.php");
-
-    // Finds information about each course
-    $mycourses=[];
-    $courses=$_SESSION["user"]["courses"];
     $requestmethod="_".$_SERVER["REQUEST_METHOD"];
     $requestmethod=$$requestmethod;
-    // Finds informatioon about each course
-    foreach ($courses as $course)
-    {
-        if (empty($course)) break;
-        $rows=query("SELECT * FROM harvardcourses WHERE id=?",$course);
-        $mycourses[intval($course)]=$rows[0];
-    }
+
     if (!empty($requestmethod["filter"]))
         $filter=$requestmethod["filter"];
     else $filter="";
@@ -31,7 +21,7 @@
     else 
         $keywords=$requestmethod["keywords"];
     if (empty($requestmethod["sort"]))
-        $sortmethod="post_rating";
+        $sortmethod="helpfulness";
     else
         $sortmethod=$requestmethod["sort"];
     if (!empty($filter))
@@ -41,8 +31,8 @@
     $selectedcoursesid=[];
     if (empty($requestmethod["scourses"]))
     {
-        $selectedcourses=$mycourses;
-        $selectedcoursesid=array_keys($mycourses);
+        $selectedcourses=getusercourses();
+        $selectedcoursesid=array_keys($selectedcourses);
     }
     else
     {
@@ -50,32 +40,33 @@
         foreach ($selectedcoursesid as $id)
         {
             $rows=query("SELECT * FROM harvardcourses WHERE id=?",$id);
-            if (count($rows)!=1)
-                $selectedcourses=[];
+            if (empty($rows))
+            {
+                $validcourses=query("SELECT * FROM allharvardcourses WHERE id=?",$id);
+                if (empty($validcourses))
+                {
+                    redirect("error.php?code=404");
+                    return;
+                }
+                query("INSERT INTO harvardcourses (id, name, department, cat_num, term, number) VALUES
+                        (?,?,?,?,?,?)",$validcourses[0]["id"], $validcourses[0]["name"], $validcourses[0]["department"], 
+                        $validcourses[0]["cat_num"],$validcourses[0]["term"], $validcourses[0]["number"]);
+                createcourseforum($validcourses[0]["id"]);
+                mkdir("../data/posts/" . $validcourses[0]["id"]);
+                $selectedcourses[$id]=$validcourses[0];
+            }
             else $selectedcourses[$id]=$rows[0];
         }
     }
     // Find all tags corresponding to selected courses.
-    $tags=[];
-    foreach ($mycourses as $course)
-    {
-        $tags[$course["id"]]=query("SELECT * FROM tagsin".$course["id"]);
-    }
+    if (empty($tags)) $tags=[];
     
     // Create an array to hold all relevant posts,
     // and an array representing the column by which we want to sort.
     $posts=[];
-    $$sortmethod=[];/*
-    foreach ($courses as $course)
-    {
-        if (empty($course)) break;
-        $rows=query("SELECT * FROM harvardcourses WHERE id=?",$course);
-        $mycourses[intval($course)]=$rows[0];
-    }*/
-    
+    $$sortmethod=[];
     
     // Find all tags corresponding to selected courses.
-    $tags=[];
     foreach ($selectedcourses as $course)
     {
         $rows=query("SELECT * FROM tagsin".$course["id"]);
@@ -101,34 +92,79 @@
         {
             $post["course"]=ucwords(strtolower($course["department"]))." ".$course["number"];
             $post["course_id"]=$course["id"];
-            if ($post["link"]!=0)
+            if (empty($post["score"])) $post["score"]=0;
+            if ($post["link"]!=0 && $post["link"] != $post["post_id"])
             {
                 if (empty($posts[$post["link"]]))
                 {
                     $rows=query("SELECT * FROM postsin".$course["id"]." WHERE post_id=?",$post["link"]);
                     if (count($rows)==1)
                     {
+                        if (!hasaccess($rows[0])) continue;
                         $posts[$post["link"]]=$rows[0];
                         $posts[$post["link"]]["replies"]=[];
-                        array_push($$sortmethod,$rows[0][$sortmethod]);
+                        $posts[$post["link"]]["helpfulness"]=4*$rows[0]["post_rating"];
+                        $posts[$post["link"]]["lastedit"]=$post["posttime"];
+                        $posts[$post["link"]]["score"]=0;
+                        $posts[$post["link"]]["read"]=false;
+                        if (!empty($_SESSION["user"]["read"]) && !empty($_SESSION["user"]["read"][$post["link"]]))
+                        {
+                            $posts[$post["link"]]["read"]=true;
+                        }
+                        $posts[$post["link"]]["course"]=$post["course"];
+                        $posts[$post["link"]]["course_id"]=$post["course_id"];
                     }
                     else continue;
                 }
                 array_push($posts[$post["link"]]["replies"],$post);
+                $posts[$post["link"]]["helpfulness"]+=$post["post_rating"];
+                $posts[$post["link"]]["score"]+=$post["score"];
+                if (strtotime($posts[$post["link"]]["lastedit"])<strtotime($post["posttime"]))
+                    $posts[$post["link"]]["lastedit"]=$post["posttime"];
+                if (!empty($_SESSION["user"]["read"]) && empty($_SESSION["user"]["read"][$post["post_id"]]))
+                    $posts[$post["link"]]["read"]=false;
             }
-            else{
+            else {
                 $post["replies"]=[];
+                $post["helpfulness"]=4*$post["post_rating"];
+                $post["lastedit"]=$post["posttime"];
+                $post["read"]=false;
+                $post["score"]=0;
+                if (!empty($_SESSION["user"]["read"]) && !empty($_SESSION["user"]["read"][$post["post_id"]]))
+                {
+                    $post["read"]=true;
+                }
                 $posts[$post["post_id"]]=$post;
-                array_push($$sortmethod,$post[$sortmethod]);
             }
         }
         $allposts=array_merge($allposts,array_values($posts));
     }
     $posts=$allposts;
+    
+    foreach ($posts as $post)
+    {
+        $post["helpfulness"]+=1;
+        if ($post["read"]) $post["helpfulness"]/=4;
+        $post["helpfulness"]/=((time()-strtotime($post["lastedit"]))/86400.0+1);
+        array_push($$sortmethod,$post[$sortmethod]);
+    }
+    
+    
     // Sort the posts by criterion
     array_multisort($$sortmethod,SORT_DESC,$posts);
     if (count($selectedcoursesid)>1)
-        $selectedcoursesid=[0];
+    {
+        $selectedcourses=[];
+        $selectedcoursesid=[];
+    }
+    else if (empty($selectedcoursesid))
+    {
+        $selectedcourses=[];
+        $selectedcoursesid=[];
+    }
+    else
+        $selectedcourses[$selectedcoursesid[0]]["course"]=ucwords(strtolower($selectedcourses[$selectedcoursesid[0]]["department"]))." ".$selectedcourses[$selectedcoursesid[0]]["number"];
+    
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         require_once("../templates/forum_template.php");
@@ -143,6 +179,7 @@
         $answer=[];
         foreach ($rows as $row)
         {
+            if (!hasaccess($row)) continue;
             $posttags=str_getcsv($row["tags"]); 
             // If $tags is a subset of $posttags
             if (count(array_diff($tags,array_intersect($tags,$posttags)))==0)

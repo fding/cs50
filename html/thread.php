@@ -17,7 +17,10 @@
             return;
         }
         if (!empty($_POST["sort"])){
-            $sortmethod=$_POST["sort"];
+            if ($_POST["sort"]=="helpfulness")
+                $sortmethod="post_rating";
+            else
+                $sortmethod="posttime";
         }
         $threadcourse=$_POST["course"];
     }
@@ -35,12 +38,15 @@
             return;
         }
         if (!empty($_GET["sort"])){
-            $sortmethod=$_GET["sort"];
+            if ($_GET["sort"]=="helpfulness")
+                $sortmethod="post_rating";
+            else
+                $sortmethod="posttime";
         }
         $threadcourse=$_GET["course"];
     }
     
-    if (!isset($tags))
+    if (empty($tags))
     {
         $rows=query("SELECT * FROM tagsin".$threadcourse);
         foreach ($rows as $row)
@@ -48,7 +54,6 @@
             $tags[$threadcourse][$row["tag_id"]]=$row;
         }
     }
-    
     $rows=query("SELECT * FROM harvardcourses WHERE id=?",$threadcourse);
     if (count($rows)!=1)
     {
@@ -63,6 +68,14 @@
     $$sortmethod=[];
     foreach ($rows as $post) 
     {
+        if (!hasaccess($post))
+        {
+            if($_SERVER["REQUEST_METHOD"] == "POST")
+            {
+                require("../templates/thread_template.php");
+            }
+            return;
+        }
         $post["course"]=ucwords(strtolower($course["department"]))." ".$course["number"];
         $post["course_id"]=$course["id"];
         if ($post["post_id"]==$thread)
@@ -74,9 +87,12 @@
             array_push($replies,$post);
             array_push($$sortmethod,$post[$sortmethod]);
         }
+        if (empty($_SESSION["user"]["read"])) $_SESSION["user"]["read"]=[];
+        $_SESSION["user"]["read"][$post["post_id"]]=1;
     }
     // Sort the posts by criterion
     if (!empty($replies))array_multisort($$sortmethod,SORT_DESC,$replies);
+    writeuser($_SESSION["id"],$_SESSION["user"]);
     
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {

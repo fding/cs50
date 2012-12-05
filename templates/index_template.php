@@ -12,13 +12,17 @@
 <?php
 	// Navigation Panel
 ?>
-
         <?php require("../templates/question_form.php");?>
 <script src="js/forumscripts.js">
 </script>
 
+<input id="userid" type="hidden" value="<?=$_SESSION["id"]?>"/>
+<input id="userfirstname" type="hidden" value="<?=$_SESSION["firstname"]?>"/>
+<input id="userlastname" type="hidden" value="<?=$_SESSION["lastname"]?>"/>
+<input id="phpsortmethod" type="hidden" value="<?=$sortmethod?>"/>
 
 <div class="navigation">
+            
     <a href="#askModal" role="button" class="btn btn-large btn-success" id = "btnask" data-toggle="modal" style="margin-top:8px;text-align:center;">Ask a question</a>
     <hr />
     <h4 style="font-family:helvetica, sans-serif; text-align:center;"> Courses</h4>
@@ -35,6 +39,18 @@
 <?php
 	// Course-container stores all the courses and associated tags
 ?>
+<?php if ((!empty($question) && empty($mycourses[$question["course_id"]]))||(!empty($selectedcourse)&&empty($mycourses[$selectedcourse["id"]]))):?>
+        <div class="bs-docs-example">
+          <div class="alert alert-block alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p>
+            You haven't added <?php if(!empty($question)) print($question["course"]); else print($selectedcourse["course"]);?>
+            yet. Wanna do so?
+              </p><a class="btn btn-info" href="#">Add it now</a>
+          </div>
+        </div>
+<?php endif; ?>
+        
     <div class="course-container">
         <?php require("menu_template.php"); ?>
 	</div>
@@ -55,15 +71,14 @@
     <div id="thread-container">
     <?php require("../templates/thread_template.php");?>
     </div>
-    
     <?php // TODO: check if an hidden element is set instead of using php. ?>
-    <?php if (!empty($question)):?>
-    <div id="reply-collapse"><h5>Reply</h5>
+    <div id="reply-collapse" style="display:none"><h5>Reply</h5>
     </div>
     <div id="reply-area" style="height:0%; overflow:hidden;">
         <textarea id = "reply" name="reply" style="width:90%;" placeholder="Reply..."></textarea>   
         <button class="btn btn-primary" id="replysubmit">Submit</button>
     </div>
+    
 </div>
 <script>
     $('#reply').wysihtml5({
@@ -76,5 +91,8 @@
 	"color": false //Button to change color of font  
     });
 </script>
-<?php endif;?>
 </div>
+<!--
+<iframe id="updateframe" src="http://crimsondiscuss.aws.af.cm" style="height:0px; width:0px;"/>-->
+
+

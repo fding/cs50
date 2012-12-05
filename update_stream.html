@@ -1,0 +1,34 @@
+<html>
+    <head><title>test</title></head>
+    
+    <script src="socket.io/socket.io.js"></script>
+    <body>
+        <script>
+            function init(){
+                window.userid=window.parent.document.getElementById("userid").value;
+            }
+            var socket = io.connect('http://localhost:8000');
+            socket.on('pullnewpost', function (postinfo) {
+                //if (window.userid!=postinfo["posterid"])
+                //{
+                    if (postinfo["link"]!=0 && postinfo["asker"]==window.userid)
+                    {
+                        // Alert user that their question received a reply.
+                    }
+                    // Check if post is from someone they follow
+                    if (postinfo["link"]==0)
+                        window.parent.showmsg("New question by "+postinfo["poster_firstname"]+" "+postinfo["poster_lastname"]+" about "+postinfo["coursename"]);
+                        
+                    window.parent.submit();
+                //}
+            });
+            socket.on("like",function(postinfo){
+                if (window.userid!=postinfo["posterid"])
+            });
+            
+            function edittedpost(postinfo){
+                socket.emit('newpost',postinfo);
+            }
+        </script>
+    </body>
+</html>

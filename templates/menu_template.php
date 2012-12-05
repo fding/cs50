@@ -1,3 +1,6 @@
+<?php if (empty($mycourses)) print("You haven't registered for any courses yet. Add some via the searchbox above!")?>
+
+        
 <?php foreach ($mycourses as $course):?>
 	<div class="course" id=<?="\"coursebox".$course["id"]."\""?>>
 	    <button type="button" class="close removecourse" style="font-size:14px; position:relative; top:-6px;" aria-hidden="true" data-course="<?=$course["id"]?>">&times;
@@ -48,11 +51,11 @@
 
 <script>
 	$(document).ready(function(){
-        <?php if(!empty($selectedcoursesid)):?>
-		    $(<?="\"#course".$selectedcoursesid[0]."\""?>).addClass("active");
+        <?php if(!empty($selectedcourse["id"])):?>
+		    $(<?="\"#course".$selectedcourse["id"]."\""?>).addClass("active");
         <?php endif;?>
         <?php if(!empty($selectedtags)):?>
-		    $(<?="\"#tag".$selectedtags[0]."-course".$selectedcoursesid[0]."\""?>).addClass("active");
+		    $(<?="\"#tag".$selectedtags[0]."-course".$selectedcourse["id"]."\""?>).addClass("active");
         <?php endif;?>
     });
 </script>

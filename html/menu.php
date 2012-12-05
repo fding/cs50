@@ -1,15 +1,9 @@
 <?php
     require_once("../includes/config.php");
-    $courses=$_SESSION["user"]["courses"];
     // Finds information about each course
-    $mycourses=[];
     $tags=[];
-    foreach ($courses as $course)
-    {
-        if (empty($course)) break;
-        $rows=query("SELECT * FROM harvardcourses WHERE id=?",$course);
-        $mycourses[intval($course)]=$rows[0];
-    }
+    $mycourses=getusercourses();
+
     foreach ($mycourses as $course)
     {
         $tags[$course["id"]]=query("SELECT * FROM tagsin".$course["id"]);
@@ -20,13 +14,9 @@
     $requestmethod=$$requestmethod;
     $selectedcoursesid=[];
     if (empty($requestmethod["scourses"]))
-    {
         $selectedcoursesid=array_keys($mycourses);
-    }
     else
-    {
         $selectedcoursesid=str_getcsv($requestmethod["scourses"]);
-    }
     
     
     if (empty($requestmethod["tags"]))

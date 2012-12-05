@@ -1,8 +1,5 @@
 <?php
-
-    // configuration
     require("../includes/config.php"); 
-
     // if form was submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
@@ -34,9 +31,6 @@
                 $_SESSION["firstname"]=$row["firstname"];
                 $_SESSION["lastname"]=$row["lastname"];
                 $_SESSION["user"]=getuser($row["id"]);
-                if ($_SESSION["user"]===false || empty ($_SESSION["user"]["courses"])||empty($_SESSION["user"]["courses"]))
-                    print("NOCOURSES");
-                // redirect to portfolio
                 print("SUCCESS");
                 die();
             }
@@ -46,10 +40,10 @@
         print("Invalid username and/or password.");
         die();
     }
-    else
-    {
-        // else render form
-        render("login_form.php", ["title" => "Log In"]);
-    }
+#    else
+#    {
+#        // else render form
+#        render("login_form.php", ["title" => "Log In"]);
+#    }
 
 ?>

@@ -1,19 +1,22 @@
-<div id="askModal" class="modal hide fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="askModal" class="modal hide fade"   tabindex="1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3 id="myModalLabel">Ask</h3>
     </div>
     <div class="modal-body">
         <div id="response">
         </div>
-        <input id="title" name="title" placeholder="Title..." type="text" style="width: 600px"></input>
-        <textarea id="question" name="question" placeholder="Post your question here..." style="width: 600px; height: 220px"></textarea>
+        <input id="title" name="title" placeholder="Title..." type="text" style="width: 600px" /><br/>
+        <textarea id="question" name="question" placeholder="Detail your question. To input equations, enclose LaTeX as in: $$expression$$." style="width: 600px; height: 220px"></textarea>
         <div class="control-group">
+<input name="type" type="text" data-provide="typeahead" style="width: 100px" data-minLength="0" data-source='["pset","project","final","lab","midterm","essay","lecture","section","reading"]' />
+
+<?php /*
             <select name="type" style="width:100px">
                 <option value="">Tags</option>
                 <option value=pset>pset</option>
                 <option value=essay>essay</option>
-            </select>
+            </select>*/?>
             <input id="psetnum" name="psetnum" type="text" style="width: 20px; " value=
             <?php 
                 if (!empty($selectedtags))
@@ -25,15 +28,15 @@
             ?>/>
             <select name="courselist" style="width:200px; margin-left:20px;">
                 <option value="">Courses</option>
-                <?php 
-                    
-                    foreach ($mycourses as $key) 
-                        if (!empty($selectedcoursesid) && $selectedcoursesid[0]==$key["id"])
-                            print("<option selected=\"selected\" value=\"{$key["name"]}\">{$key["name"]}</option>");
-                        else 
-                            print("<option value=\"{$key["name"]}\">{$key["name"]}</option>");
-                ?>
             </select>
+            <select name="privacy">
+                <option value="0">Visible to all</option>
+                <option value="1">Post anonymously</option>
+                <option value="3">Visible only to certain friends</option>
+            </select>
+        <input id="visibleto" name="visibleto" placeholder="Visible to ..." type="text" style="width: 600px; display:none;" />
+        
+           
             <span id="submit-error" style="color:red"></span>
         </div>
         <script type="text/javascript">
@@ -45,41 +48,3 @@
         <button class="btn btn-primary" id="submit">Submit</button>
     </div>
 </div>
-
-<script>
-	$(document).ready( function(){
-		$("#submit").click(function(){
-			if ($("input[name=title]").val()=="")
-				$("#submit-error").text("Please enter a title!");
-			else if ($("textarea[name=question]").val()=="")
-				$("#submit-error").text("Please enter a question!");
-			else if ($("select[name=type]").val()=="")
-				$("#submit-error").text("Please enter a tag type!");
-			else if ($("input[name=psetnum]").val()=="")
-				$("#submit-error").text("Please enter a tag number!");
-			else if ($("select[name=courselist]").val()=="")
-				$("#submit-error").text("Please select a course!");
-			else
-			{
-			    $.ajax({
-				    url:'question.php',
-				    type: 'POST',
-				    data:{
-					    title: $("input[name=title]").val(),
-					    question: $("textarea[name=question]").val(),
-					    type: $("select[name=type]").val(),
-					    psetnum: $("input[name=psetnum]").val(),
-					    course: $("select[name=courselist]").val()
-				    },
-				    success: function(response)
-				    {
-					    submit();
-					    $("#askModal").modal('hide');
-					    $.showmsg("Your question has been posted.");
-					    return true;
-				    }
-			    });
-		    };
-        });
-    });
-</script>

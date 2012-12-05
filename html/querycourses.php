@@ -3,8 +3,11 @@
     if (empty($_POST["q"]));
     else
     {
+        $curdate=getdate();
+        if ($curdate["mon"]<8) $term="SPRING";
+        else $term="FALL";
         $q=strtolower($_POST["q"]);
-        $rows=query("SELECT * FROM allharvardcourses");
+        $rows=query("SELECT * FROM allharvardcourses WHERE term=?",$term);
         $scores=[];
         $results=[];
         foreach ($rows as $row)
